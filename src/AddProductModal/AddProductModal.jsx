@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
-import { createProduct } from '../actions/products';
-import { closeAddProductModal } from '../actions/ui';
+import { createProduct, updateProduct } from '../actions/products';
+import { closeAddProductModal, setCurrentProductId } from '../actions/ui';
 import { AddProductModalStyles } from './AddProductModalStyle';
 
 const AddProductModal = () => {
     const styles = new AddProductModalStyles();
     const dispatch = useDispatch();
     const isPopupOpen = useSelector((state) => state.ui.isAddProductModalOpen);
+    const currentProductId = useSelector((state) => state.ui.currentProductId);
+    const productToEdit = useSelector((state) => currentProductId ? state.products.find((p) => p._id === currentProductId) : null);
 
     const placeholderCategories = [
         'Vehicle Parts & Components',
@@ -37,6 +39,27 @@ const AddProductModal = () => {
     const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');
 
+    React.useEffect(() => {
+        if (productToEdit) {
+            setFormData(productToEdit);
+        } else {
+            setFormData({
+                ProductName: '',
+                ProductDescription: '',
+                ProductPrice: '',
+                ProductCategory: '',
+                ProductSKU: '',
+                ProductBarcode: '',
+                ProductQuantity: '',
+                ProductStatus: 'Active',
+                ProductSupplier: '',
+                ProductLocation: '',
+                ProductQuantityUsed: 0,
+                ProductImage: ''
+            });
+        }
+    }, [productToEdit]);
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (name === 'ProductCategory' && value === 'add_new_category') {
@@ -54,8 +77,19 @@ const AddProductModal = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(createProduct(formData));
+        console.log('Submitting form...');
+        console.log('Current Product ID:', currentProductId);
+        console.log('Form Data:', formData);
+
+        if (currentProductId) {
+            console.log('Dispatching updateProduct...');
+            dispatch(updateProduct(currentProductId, formData));
+        } else {
+            console.log('Dispatching createProduct...');
+            dispatch(createProduct(formData));
+        }
         dispatch(closeAddProductModal());
+        dispatch(setCurrentProductId(null));
         setFormData({
             ProductName: '',
             ProductDescription: '',
@@ -72,6 +106,7 @@ const AddProductModal = () => {
         });
         setIsAddingNewCategory(false);
         setNewCategoryName('');
+        console.log(formData);
     };
 
     if (!isPopupOpen) return null;
@@ -80,8 +115,8 @@ const AddProductModal = () => {
         <div style={styles.overlay}>
             <div style={styles.popup}>
                 <div style={styles.popupHeader}>
-                    <h2 style={styles.popupTitle}>New SKU</h2>
-                    <button style={styles.closeButton} onClick={() => dispatch(closeAddProductModal())}>
+                    <h2 style={styles.popupTitle}>{currentProductId ? 'Edit Product' : 'New SKU'}</h2>
+                    <button style={styles.closeButton} onClick={() => { dispatch(closeAddProductModal()); dispatch(setCurrentProductId(null)); }}>
                         <CloseIcon />
                     </button>
                 </div>
@@ -189,7 +224,7 @@ const AddProductModal = () => {
 
                     <div style={styles.buttonGroup}>
                         <button type="submit" style={styles.submitButton}>Submit</button>
-                        <button type="button" style={styles.cancelButton} onClick={() => dispatch(closeAddProductModal())}>Cancel</button>
+                        <button type="button" style={styles.cancelButton} onClick={() => { dispatch(closeAddProductModal()); dispatch(setCurrentProductId(null)); }}>Cancel</button>
                     </div>
                 </form>
             </div>

@@ -8,7 +8,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import { openAddProductModal } from '../actions/ui';
+import { openAddProductModal, setCurrentProductId } from '../actions/ui';
 
 const Inventory = () => {
     const styles = new InventoryStyles();
@@ -17,6 +17,11 @@ const Inventory = () => {
     const categories = useSelector((state) => state.categories);
     console.log('Products:', posts);
     console.log('Categories:', categories);
+
+    const handleEdit = (id) => {
+        dispatch(setCurrentProductId(id));
+        dispatch(openAddProductModal());
+    };
 
     const inventoryData = [
         { id: 1, part: 'Battery Pack', sku: 'BAT-125-GEN1', price: '$8,500', category: 'Electrical Components', stock: 90, lowStock: false, sales: '$2,626,500' },
@@ -67,18 +72,18 @@ const Inventory = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {inventoryData.map((item) => (
-                                <tr key={item.id}>
+                            {posts.map((item) => (
+                                <tr key={item._id}>
                                     <td style={styles.td}>
                                         <div style={styles.partCell}>
-                                            <div style={styles.partImage}></div> {/* Placeholder for image */}
-                                            {item.part}
+                                            <div style={styles.partImage}><img style={styles.partImage} src={item.ProductImage} alt=""></img></div>
+                                            {item.ProductName}
                                         </div>
                                     </td>
-                                    <td style={styles.td}>{item.sku}</td>
-                                    <td style={styles.td}>{item.price}</td>
+                                    <td style={styles.td}>{item.ProductSKU}</td>
+                                    <td style={styles.td}>{item.ProductPrice}</td>
                                     <td style={styles.td}>
-                                        <span style={styles.categoryBadge}>{item.category}</span>
+                                        <span style={styles.categoryBadge}>{item.ProductCategory}</span>
                                     </td>
                                     <td style={styles.td}>
                                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -91,15 +96,15 @@ const Inventory = () => {
                                         </div>
                                     </td>
                                     <td style={styles.td}>
-                                        {item.lowStock && <WarningAmberIcon style={styles.warningIcon} />}
+                                        {item.ProductQuantity < 10 && <WarningAmberIcon style={styles.warningIcon} />}
                                     </td>
-                                    <td style={styles.td}>{item.stock} units</td>
+                                    <td style={styles.td}>{item.ProductQuantity} units</td>
                                     <td style={styles.td}>
                                         <button style={styles.addStockButton}>Add Stock</button>
                                     </td>
-                                    <td style={styles.td}>{item.sales}</td>
+                                    <td style={styles.td}>{item.ProductQuantityUsed || 0}</td>
                                     <td style={styles.td}>
-                                        <MoreHorizIcon style={styles.actionIcon} />
+                                        <MoreHorizIcon style={{ ...styles.actionIcon, cursor: 'pointer' }} onClick={() => handleEdit(item._id)} />
                                     </td>
                                 </tr>
                             ))}
