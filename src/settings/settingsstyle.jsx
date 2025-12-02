@@ -6,7 +6,7 @@ export class SettingsStyles {
         backgroundColor: 'white',
     };
     mainContent = {
-        marginLeft: '250px',
+        marginLeft: '200px',
         flex: 1,
         padding: '2rem',
         marginTop: '70px',

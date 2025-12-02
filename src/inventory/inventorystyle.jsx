@@ -6,7 +6,7 @@ export class InventoryStyles {
         backgroundColor: 'white',
     };
     mainContent = {
-        marginLeft: '250px',
+        marginLeft: '200px',
         flex: 1,
         padding: '2rem',
         marginTop: '70px',
@@ -131,6 +131,16 @@ export class InventoryStyles {
         cursor: 'pointer',
         fontWeight: '500',
     };
+    utilizeStockButton = {
+        padding: '0.25rem 0.75rem',
+        borderRadius: '6px',
+        border: '1px solid #e5e7eb',
+        backgroundColor: 'white',
+        color: '#ef4444', // Red color for utilize
+        fontSize: '0.85rem',
+        cursor: 'pointer',
+        fontWeight: '500',
+    };
     actionIcon = {
         color: '#9ca3af',
         cursor: 'pointer',
@@ -227,14 +237,153 @@ export class InventoryStyles {
         fontWeight: '600',
         cursor: 'pointer',
     };
-    cancelButton = {
-        flex: 1,
-        padding: '0.6rem', // Reduced padding
-        borderRadius: '6px',
-        border: '1px solid #d1d5db',
+    filterDropdown = {
+        position: 'absolute',
+        top: '100%',
+        right: 0,
         backgroundColor: 'white',
-        color: '#374151',
-        fontWeight: '600',
+        border: '1px solid #ccc',
+        borderRadius: '4px',
+        zIndex: 10,
+        minWidth: '300px',
+        padding: '1rem',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+        color: 'black'
+    };
+    filterGroup = {
+        marginBottom: '1rem'
+    };
+    filterLabel = {
+        display: 'block',
+        fontWeight: 'bold',
+        marginBottom: '0.5rem',
+        color: 'black'
+    };
+    filterSelect = {
+        width: '100%',
+        padding: '0.5rem',
+        borderRadius: '4px',
+        border: '1px solid #ddd',
+        color: 'black',
+        backgroundColor: 'white'
+    };
+    filterOption = {
+        color: 'black',
+        backgroundColor: 'white'
+    };
+    filterInputGroup = {
+        display: 'flex',
+        gap: '0.5rem'
+    };
+    filterInput = {
+        width: '50%',
+        padding: '0.5rem',
+        borderRadius: '4px',
+        border: '1px solid #ddd',
+        color: 'black',
+        backgroundColor: 'white'
+    };
+    filterDateGroup = {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '0.5rem'
+    };
+    filterDateInput = {
+        width: '100%',
+        padding: '0.5rem',
+        borderRadius: '4px',
+        border: '1px solid #ddd',
+        color: 'black',
+        backgroundColor: 'white'
+    };
+    clearFiltersButton = {
+        width: '100%',
+        padding: '0.5rem',
+        backgroundColor: '#f0f0f0',
+        border: 'none',
+        borderRadius: '4px',
         cursor: 'pointer',
+        color: 'black'
+    };
+    barcodeContainer = {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    };
+    barcodeBars = {
+        display: 'flex',
+        gap: '2px',
+        height: '20px'
+    };
+    popupOverlay = {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000
+    };
+    popupContainer = {
+        backgroundColor: 'white',
+        padding: '2rem',
+        borderRadius: '8px',
+        width: '300px',
+        boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+    };
+    confirmPopupTitle = {
+        marginBottom: '1rem',
+        fontSize: '1.25rem',
+        fontWeight: 'bold'
+    };
+    popupText = {
+        marginBottom: '1rem',
+        color: '#4b5563'
+    };
+    popupInput = {
+        width: '100%',
+        padding: '0.5rem',
+        marginBottom: '1rem',
+        borderRadius: '4px',
+        border: '1px solid #d1d5db'
+    };
+    popupActions = {
+        display: 'flex',
+        gap: '1rem',
+        justifyContent: 'flex-end'
+    };
+    popupCancelButton = {
+        padding: '0.5rem 1rem',
+        border: '1px solid #d1d5db',
+        borderRadius: '4px',
+        background: 'white',
+        cursor: 'pointer',
+        color: '#374151'
+    };
+    popupConfirmButton = {
+        padding: '0.5rem 1rem',
+        border: 'none',
+        borderRadius: '4px',
+        background: '#374151',
+        color: 'white',
+        cursor: 'pointer'
+    };
+    contentWrapper = {
+        display: 'flex',
+        flex: 1,
+    };
+    filterContainer = {
+        position: 'relative',
+    };
+    barcodeLineThin = {
+        width: '1px',
+        backgroundColor: 'black',
+    };
+    barcodeLineThick = {
+        width: '2px',
+        backgroundColor: 'black',
     };
 }

@@ -6,7 +6,7 @@ export class CategoriesStyles {
         backgroundColor: 'white',
     };
     mainContent = {
-        marginLeft: '250px',
+        marginLeft: '200px',
         flex: 1,
         padding: '2rem',
         marginTop: '70px',
@@ -97,6 +97,15 @@ export class CategoriesStyles {
         justifyContent: 'center',
         color: '#6b7280',
         backgroundColor: 'white',
+    };
+    actionContainer = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+    };
+    moreIcon = {
+        color: '#9ca3af',
+        cursor: 'pointer',
     };
 
     // Popup Styles

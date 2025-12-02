@@ -5,12 +5,43 @@ export class DashboardStyles {
         backgroundColor: 'white',
     };
     mainContent = {
-        marginLeft: '250px', // Width of sidebar
+        marginLeft: '200px', // Width of sidebar
         flex: 1,
         padding: '2rem',
         display: 'flex',
         flexDirection: 'column',
         gap: '2rem',
+    };
+    contentWrapper = {
+        display: 'flex',
+        flex: 1,
+        marginTop: '70px',
+    };
+    cardSubLabel = {
+        fontSize: '0.8rem',
+        color: '#6b7280',
+        marginBottom: '0.5rem',
+    };
+    stockList = {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1rem',
+    };
+    stockValueContainer = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+    };
+    categoryGrid = {
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr',
+        gap: '1rem',
+    };
+    categoryItem = {
+        backgroundColor: '#f3f4f6',
+        padding: '1rem',
+        borderRadius: '8px',
+        textAlign: 'center',
     };
     header = {
         display: 'flex',

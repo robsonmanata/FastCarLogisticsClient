@@ -99,4 +99,22 @@ export class AddProductModalStyles {
         fontWeight: '600',
         cursor: 'pointer',
     };
+    fileInputLabel = {
+        padding: '0.6rem',
+        backgroundColor: '#374151',
+        color: 'white',
+        borderRadius: '6px',
+        border: 'none',
+        textAlign: 'center',
+        cursor: 'pointer',
+        display: 'block',
+        width: '100%',
+        boxSizing: 'border-box',
+        fontSize: '0.9rem',
+        fontWeight: '600',
+        marginTop: '0.5rem',
+    };
+    fileInput = {
+        display: 'none',
+    };
 }

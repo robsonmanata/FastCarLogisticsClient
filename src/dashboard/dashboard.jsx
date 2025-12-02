@@ -17,11 +17,11 @@ const Dashboard = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: 'white' }}>
+    <div style={styles.wrapper}>
       <TopBar />
-      <div style={{ display: 'flex', flex: 1, marginTop: '70px' }}>
+      <div style={styles.contentWrapper}>
         <NavigationBar />
-        <div style={{ ...styles.mainContent, marginLeft: '250px', width: 'calc(100% - 250px)' }} className="main-content">
+        <div style={styles.mainContent} className="main-content">
           {/* Removed old header since it's now in TopBar */}
 
           <div>
@@ -30,7 +30,7 @@ const Dashboard = () => {
               {activityCards.map((card, index) => (
                 <div key={index} style={styles.card}>
                   <div style={styles.cardValue}>{card.value}</div>
-                  <div style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '0.5rem' }}>{card.sub}</div>
+                  <div style={styles.cardSubLabel}>{card.sub}</div>
                   <div style={styles.cardLabel}>{card.label}</div>
                 </div>
               ))}
@@ -40,10 +40,10 @@ const Dashboard = () => {
           <div style={styles.gridContainer}>
             <div style={styles.contentCard}>
               <h3 style={styles.sectionTitle}>Stock numbers</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div style={styles.stockList}>
                 <div style={styles.stockRow}>
                   <span style={styles.lowStock}>Low stock items</span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <div style={styles.stockValueContainer}>
                     <span style={styles.lowStockValue}>12</span>
                     <div style={styles.dot}></div>
                   </div>
@@ -62,11 +62,11 @@ const Dashboard = () => {
             <div style={styles.contentCard}>
               <h3 style={styles.sectionTitle}>Top item categories</h3>
               {/* Placeholder for Categories */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                <div style={{ backgroundColor: '#f3f4f6', padding: '1rem', borderRadius: '8px', textAlign: 'center' }}><img src={Categories} alt="Categories" style={styles.categoryImage} /></div>
-                <div style={{ backgroundColor: '#f3f4f6', padding: '1rem', borderRadius: '8px', textAlign: 'center' }}><img src={Categories} alt="Categories" style={styles.categoryImage} /></div>
-                <div style={{ backgroundColor: '#f3f4f6', padding: '1rem', borderRadius: '8px', textAlign: 'center' }}><img src={Categories} alt="Categories" style={styles.categoryImage} /></div>
-                <div style={{ backgroundColor: '#f3f4f6', padding: '1rem', borderRadius: '8px', textAlign: 'center' }}><img src={Categories} alt="Categories" style={styles.categoryImage} /></div>
+              <div style={styles.categoryGrid}>
+                <div style={styles.categoryItem}><img src={Categories} alt="Categories" style={styles.categoryImage} /></div>
+                <div style={styles.categoryItem}><img src={Categories} alt="Categories" style={styles.categoryImage} /></div>
+                <div style={styles.categoryItem}><img src={Categories} alt="Categories" style={styles.categoryImage} /></div>
+                <div style={styles.categoryItem}><img src={Categories} alt="Categories" style={styles.categoryImage} /></div>
               </div>
             </div>
           </div>

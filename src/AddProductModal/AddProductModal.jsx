@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { createProduct, updateProduct } from '../actions/products';
+import { createCategory } from '../actions/categories';
 import { closeAddProductModal, setCurrentProductId } from '../actions/ui';
 import { AddProductModalStyles } from './AddProductModalStyle';
+
+import imageCompression from 'browser-image-compression';
 
 const AddProductModal = () => {
     const styles = new AddProductModalStyles();
@@ -11,16 +14,7 @@ const AddProductModal = () => {
     const isPopupOpen = useSelector((state) => state.ui.isAddProductModalOpen);
     const currentProductId = useSelector((state) => state.ui.currentProductId);
     const productToEdit = useSelector((state) => currentProductId ? state.products.find((p) => p._id === currentProductId) : null);
-
-    const placeholderCategories = [
-        'Vehicle Parts & Components',
-        'Workshop & Safety Supplies',
-        'Logistics & Storage',
-        'Accessories & Fittings',
-        'Consumables & Fluids',
-        'Tools & Equipment',
-        'Tires & Wheels'
-    ];
+    const categories = useSelector((state) => state.categories);
 
     const [formData, setFormData] = useState({
         ProductName: '',
@@ -75,19 +69,52 @@ const AddProductModal = () => {
         setFormData({ ...formData, ProductCategory: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleFileChange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const options = {
+                maxSizeMB: 0.2,
+                maxWidthOrHeight: 800,
+                useWebWorker: true,
+            };
+
+            try {
+                const compressedFile = await imageCompression(file, options);
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setFormData(prev => ({
+                        ...prev,
+                        ProductImage: reader.result
+                    }));
+                };
+                reader.readAsDataURL(compressedFile);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true);
         console.log('Submitting form...');
         console.log('Current Product ID:', currentProductId);
         console.log('Form Data:', formData);
 
+        if (isAddingNewCategory && newCategoryName) {
+            await dispatch(createCategory({ CategoryName: newCategoryName, CategoryDescription: '' }));
+        }
+
         if (currentProductId) {
             console.log('Dispatching updateProduct...');
-            dispatch(updateProduct(currentProductId, formData));
+            await dispatch(updateProduct(currentProductId, formData));
         } else {
             console.log('Dispatching createProduct...');
-            dispatch(createProduct(formData));
+            await dispatch(createProduct(formData));
         }
+        setIsLoading(false);
         dispatch(closeAddProductModal());
         dispatch(setCurrentProductId(null));
         setFormData({
@@ -143,9 +170,9 @@ const AddProductModal = () => {
                                 required
                             >
                                 <option value="">Select Category</option>
-                                {placeholderCategories.map((cat, index) => (
-                                    <option key={index} value={cat}>
-                                        {cat}
+                                {categories && categories.map((cat) => (
+                                    <option key={cat._id} value={cat.CategoryName}>
+                                        {cat.CategoryName}
                                     </option>
                                 ))}
                                 <option value="add_new_category">Add new category</option>
@@ -222,8 +249,22 @@ const AddProductModal = () => {
                         />
                     </div>
 
+                    <div style={styles.formGroup}>
+                        <label style={styles.fileInputLabel}>
+                            {formData.ProductImage ? 'Image Uploaded' : 'Upload Product Image'}
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                style={styles.fileInput}
+                            />
+                        </label>
+                    </div>
+
                     <div style={styles.buttonGroup}>
-                        <button type="submit" style={styles.submitButton}>Submit</button>
+                        <button type="submit" disabled={isLoading} style={{ ...styles.submitButton, backgroundColor: isLoading ? '#9ca3af' : styles.submitButton.backgroundColor, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+                            {isLoading ? 'Processing...' : 'Submit'}
+                        </button>
                         <button type="button" style={styles.cancelButton} onClick={() => { dispatch(closeAddProductModal()); dispatch(setCurrentProductId(null)); }}>Cancel</button>
                     </div>
                 </form>

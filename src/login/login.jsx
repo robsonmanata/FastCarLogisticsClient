@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { signin, signup } from '../actions/user';
 import { LoginStyles } from './loginstyle';
 import loginImage from '../assets/blueTruck.webp';
 import logoImage from '../assets/fastcarlogo.webp';
@@ -6,8 +9,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import imageCompression from 'browser-image-compression';
+
 const Login = () => {
     const styles = new LoginStyles();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [isSignUp, setIsSignUp] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
@@ -39,17 +46,28 @@ const Login = () => {
         setShowPassword(false);
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setFormData(prev => ({
-                    ...prev,
-                    profilePicture: reader.result
-                }));
+            const options = {
+                maxSizeMB: 0.2,
+                maxWidthOrHeight: 800,
+                useWebWorker: true,
             };
-            reader.readAsDataURL(file);
+
+            try {
+                const compressedFile = await imageCompression(file, options);
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    setFormData(prev => ({
+                        ...prev,
+                        profilePicture: reader.result
+                    }));
+                };
+                reader.readAsDataURL(compressedFile);
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
@@ -60,11 +78,17 @@ const Login = () => {
                 alert("Passwords do not match!");
                 return;
             }
-            console.log('Sign Up attempt:', formData);
-            // Add sign up logic here
+            // Map form data to expected backend fields
+            const signupData = {
+                ...formData,
+                firstName: formData.name,
+                lastName: formData.surname,
+                confirmPassword: formData.repeatPassword,
+                role: 'user' // Default role, can be adjusted
+            };
+            dispatch(signup(signupData, navigate));
         } else {
-            console.log('Login attempt:', formData);
-            // Add login logic here
+            dispatch(signin(formData, navigate));
         }
     };
 

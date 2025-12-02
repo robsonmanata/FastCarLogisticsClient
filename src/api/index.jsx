@@ -1,24 +1,42 @@
 import axios from 'axios';
 
-const url = 'http://localhost:3001';
+const API = axios.create({ baseURL: 'http://localhost:3001' });
 
-export const getProducts = () => axios.get(`${url}/products`);
-export const createProduct = (newProduct) => axios.post(`${url}/products`, newProduct);
-export const updateProduct = (id, updatedProduct) => axios.patch(`${url}/products/${id}`, updatedProduct);
-export const deleteProduct = (id) => axios.delete(`${url}/products/${id}`);
+API.interceptors.request.use((req) => {
+    if (localStorage.getItem('profile')) {
+        req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
+    }
 
-export const getCategories = () => axios.get(`${url}/categories`);
-export const createCategory = (newCategory) => axios.post(`${url}/categories`, newCategory);
-export const updateCategory = (id, updatedCategory) => axios.patch(`${url}/categories/${id}`, updatedCategory);
-export const deleteCategory = (id) => axios.delete(`${url}/categories/${id}`);
+    return req;
+});
 
-export const getWarehouses = () => axios.get(`${url}/warehouses`);
-export const createWarehouse = (newWarehouse) => axios.post(`${url}/warehouses`, newWarehouse);
-export const updateWarehouse = (id, updatedWarehouse) => axios.patch(`${url}/warehouses/${id}`, updatedWarehouse);
-export const deleteWarehouse = (id) => axios.delete(`${url}/warehouses/${id}`);
+export const getProducts = () => API.get('/products');
+export const createProduct = (newProduct) => API.post('/products', newProduct);
+export const updateProduct = (id, updatedProduct) => API.patch(`/products/${id}`, updatedProduct);
+export const deleteProduct = (id) => API.delete(`/products/${id}`);
+
+export const getCategories = () => API.get('/categories');
+export const createCategory = (newCategory) => API.post('/categories', newCategory);
+export const updateCategory = (id, updatedCategory) => API.patch(`/categories/${id}`, updatedCategory);
+export const deleteCategory = (id) => API.delete(`/categories/${id}`);
+
+export const getWarehouses = () => API.get('/warehouses');
+export const createWarehouse = (newWarehouse) => API.post('/warehouses', newWarehouse);
+export const updateWarehouse = (id, updatedWarehouse) => API.patch(`/warehouses/${id}`, updatedWarehouse);
+export const deleteWarehouse = (id) => API.delete(`/warehouses/${id}`);
+
+export const getUsers = () => API.get('/user');
+export const createUser = (newUser) => API.post('/user', newUser);
+export const updateUser = (id, updatedUser) => API.patch(`/user/${id}`, updatedUser);
+export const deleteUser = (id) => API.delete(`/user/${id}`);
+
+export const fetchOrders = () => API.get('/orders');
+export const createOrder = (newOrder) => API.post('/orders', newOrder);
+export const updateOrder = (id, updatedOrder) => API.patch(`/orders/${id}`, updatedOrder);
+export const deleteOrder = (id) => API.delete(`/orders/${id}`);
 
 
-export const getUsers = () => axios.get(`${url}/user`);
-export const createUser = (newUser) => axios.post(`${url}/user`, newUser);
-export const updateUser = (id, updatedUser) => axios.patch(`${url}/user/${id}`, updatedUser);
-export const deleteUser = (id) => axios.delete(`${url}/user/${id}`);
+
+
+export const signIn = (formData) => API.post('/user/signin', formData);
+export const signUp = (formData) => API.post('/user/signup', formData);

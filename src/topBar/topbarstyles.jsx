@@ -15,10 +15,23 @@ export class TopBarStyles {
         zIndex: 1000,
     };
 
+    logoContainer = {
+        display: 'flex',
+        alignItems: 'center',
+        gap: '1rem',
+        width: '25%', // Give it some space
+    };
+
     logoimage = {
-        width: '20%',
-        height: '20%',
-        objectFit: 'cover',
+        height: '40px', // Fixed height for better control
+        objectFit: 'contain',
+    };
+
+    welcomeText = {
+        fontSize: '1rem',
+        fontWeight: '600',
+        color: '#374151',
+        whiteSpace: 'nowrap',
     };
 
     searchContainer = {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { TopBarStyles } from './topbarstyles';
 import logoImage from '../assets/fastcarlogo.webp';
 import AppsIcon from '@mui/icons-material/Apps';
@@ -8,12 +8,15 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
+import * as api from '../api/index';
 import { openAddProductModal } from '../actions/ui';
 
 const TopBar = () => {
     const styles = new TopBarStyles();
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.authData);
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
@@ -70,8 +73,11 @@ const TopBar = () => {
 
     return (
         <div style={styles.container}>
-            <div>
+            <div style={styles.logoContainer}>
                 <img src={logoImage} alt="Logo" style={styles.logoimage} />
+                {user?.result?.name && (
+                    <span style={styles.welcomeText}>Welcome, {user.result.name}</span>
+                )}
             </div>
 
             <div style={styles.searchContainer} ref={searchRef}>
@@ -110,7 +116,11 @@ const TopBar = () => {
                 <ChatBubbleOutlineIcon style={styles.icon} titleAccess="Chat" />
                 <NotificationsNoneIcon style={styles.icon} titleAccess="Notifications" />
                 <div style={styles.avatar}>
-                    <PersonIcon />
+                    {user?.result?.profilePicture ? (
+                        <img src={user.result.profilePicture} alt={user.result.name} style={styles.avatarImage} />
+                    ) : (
+                        <PersonIcon />
+                    )}
                 </div>
             </div>
         </div>

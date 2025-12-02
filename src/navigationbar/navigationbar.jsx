@@ -12,6 +12,7 @@ import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 
+
 import { useDispatch } from 'react-redux';
 import { openAddProductModal } from '../actions/ui';
 
@@ -24,6 +25,8 @@ const NavigationBar = () => {
     const menuItems = [
         { label: 'Dashboard', path: '/dashboard', icon: <HomeIcon /> },
         { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
+        { label: 'Orders', path: '/orders', icon: <InventoryIcon /> },
+
         { label: 'Categories', path: '/categories', icon: <CategoryIcon /> },
         { label: 'Warehouse', path: '/warehouse', icon: <StoreIcon /> },
         { label: 'Finances', path: '/finances', icon: <MonetizationOnIcon /> },
@@ -56,10 +59,10 @@ const NavigationBar = () => {
                     <AddIcon />
                     Add product
                 </button>
-                <Link to="/login" style={styles.menuItem}>
+                <button onClick={() => { dispatch({ type: 'LOGOUT' }); window.location.href = '/login'; }} style={{ ...styles.menuItem, background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', fontSize: 'inherit', fontFamily: 'inherit' }}>
                     <LogoutIcon style={{ marginRight: '1rem' }} />
                     Log out
-                </Link>
+                </button>
             </div>
         </div>
     );
