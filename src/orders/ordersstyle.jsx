@@ -130,6 +130,7 @@ export class OrdersStyles {
         fontSize: '1rem',
         fontWeight: '600',
         marginBottom: '0.5rem',
+        color: '#1f2937',
     };
     itemsTable = {
         width: '100%',

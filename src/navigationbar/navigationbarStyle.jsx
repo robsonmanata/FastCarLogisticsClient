@@ -6,7 +6,7 @@ export class NavigationStyles {
         color: 'white',
         display: 'flex',
         flexDirection: 'column',
-        padding: '1rem',
+        padding: '0.5rem', // Further reduced padding
         boxSizing: 'border-box',
         position: 'fixed',
         left: 0,
@@ -17,33 +17,33 @@ export class NavigationStyles {
     menu = {
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.25rem', // Reduced gap for compact layout
+        gap: '0.1rem', // Minimal gap
         flex: 1,
     };
     menuItem = {
         display: 'flex',
         alignItems: 'center',
-        padding: '0.6rem 1rem', // Reduced padding for compact layout
+        padding: '0.5rem 0.75rem', // Tighter padding
         color: 'rgba(9, 9, 9, 0.7)',
         textDecoration: 'none',
         borderRadius: '8px',
         transition: 'all 0.2s',
         cursor: 'pointer',
-        fontSize: '0.95rem', // Slightly smaller font
+        fontSize: '0.9rem', // Smaller font
     };
     menuItemActive = {
         backgroundColor: 'rgba(234, 232, 232, 0.1)',
         color: 'black',
     };
     icon = {
-        marginRight: '0.75rem', // Slightly reduced margin
-        fontSize: '1.2rem',
+        marginRight: '0.75rem',
+        fontSize: '1.1rem', // Smaller icon
     };
     bottomSection = {
-        marginTop: 'auto', // Push to bottom
+        marginTop: 'auto',
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.25rem', // Reduced gap
+        gap: '0.1rem', // Minimal gap
         borderTop: '1px solid rgba(255, 255, 255, 0.1)',
         paddingTop: '0.5rem',
     };

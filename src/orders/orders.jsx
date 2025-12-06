@@ -82,9 +82,8 @@ const Orders = () => {
                                     <th style={styles.th}></th>
                                     <th style={styles.th}>ORDER #</th>
                                     <th style={styles.th}>ORDER DATE</th>
-                                    <th style={styles.th}>BILLED TO</th>
+                                    <th style={styles.th}>ACCEPTED BY</th>
                                     <th style={styles.th}>TOTAL</th>
-                                    <th style={styles.th}>STATUS</th>
                                     <th style={styles.th}>ACTIONS</th>
                                 </tr>
                             </thead>
@@ -106,9 +105,6 @@ const Orders = () => {
                                                 <td style={styles.td}>{new Date(order.OrderDate).toLocaleDateString()}</td>
                                                 <td style={styles.td}>{order.BilledTo}</td>
                                                 <td style={styles.td}>${order.Total}</td>
-                                                <td style={styles.td}>
-                                                    <span style={styles.statusBadge(order.Status)}>{order.Status}</span>
-                                                </td>
                                                 <td style={styles.td}>
                                                     <button style={styles.actionButton} onClick={() => handleEdit(order._id)}>
                                                         Edit

@@ -195,4 +195,14 @@ export class CategoriesStyles {
         fontWeight: '600',
         cursor: 'pointer',
     };
+    deleteButton = {
+        flex: 1,
+        padding: '0.6rem',
+        borderRadius: '6px',
+        border: 'none',
+        backgroundColor: '#ef4444',
+        color: 'white',
+        fontWeight: '600',
+        cursor: 'pointer',
+    };
 }

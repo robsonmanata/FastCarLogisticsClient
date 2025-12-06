@@ -11,7 +11,9 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CloseIcon from '@mui/icons-material/Close';
 
 import parts from '../assets/parts.png';
-import { createCategory, updateCategory } from '../actions/categories';
+import { createCategory, updateCategory, deleteCategory } from '../actions/categories';
+
+import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
 
 const Categories = () => {
     const styles = new CategoriesStyles();
@@ -25,6 +27,7 @@ const Categories = () => {
         CategoryName: '',
         CategoryDescription: ''
     });
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -57,9 +60,23 @@ const Categories = () => {
         if (currentCategoryId) {
             await dispatch(updateCategory(currentCategoryId, formData));
         } else {
-            await dispatch(createCategory(formData));
+            const user = JSON.parse(localStorage.getItem('profile'));
+            const userName = user?.result?.name || user?.result?.givenName + ' ' + user?.result?.familyName || 'Unknown User';
+            await dispatch(createCategory({ ...formData, User: userName }));
         }
         setIsLoading(false);
+        handleClose();
+    };
+
+    const handleDelete = () => {
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        setIsLoading(true);
+        await dispatch(deleteCategory(currentCategoryId));
+        setIsLoading(false);
+        setIsDeleteModalOpen(false);
         handleClose();
     };
 
@@ -145,12 +162,24 @@ const Categories = () => {
                                 <button type="submit" disabled={isLoading} style={{ ...styles.submitButton, backgroundColor: isLoading ? '#9ca3af' : styles.submitButton.backgroundColor, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
                                     {isLoading ? 'Processing...' : 'Submit'}
                                 </button>
+                                {currentCategoryId && (
+                                    <button type="button" onClick={handleDelete} disabled={isLoading} style={{ ...styles.deleteButton, backgroundColor: isLoading ? '#9ca3af' : styles.deleteButton.backgroundColor, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+                                        Delete
+                                    </button>
+                                )}
                                 <button type="button" style={styles.cancelButton} onClick={() => setIsPopupOpen(false)}>Cancel</button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
+            <ConfirmationModal
+                isOpen={isDeleteModalOpen}
+                title="Delete Category"
+                message="Are you sure you want to delete this category? This action cannot be undone."
+                onConfirm={confirmDelete}
+                onCancel={() => setIsDeleteModalOpen(false)}
+            />
         </div>
     );
 };

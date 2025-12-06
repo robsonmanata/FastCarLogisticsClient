@@ -20,10 +20,12 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
         }
     }, [orderToEdit]);
 
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const userName = user?.result?.name ? `${user.result.name} ${user.result.surname || ''}`.trim() : 'Unknown User';
+
     const [formData, setFormData] = useState({
         OrderNumber: '',
-        BilledTo: '',
-        Status: 'Pending',
+        BilledTo: userName,
         Items: []
     });
 
@@ -225,13 +227,14 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
                         />
                     </div>
                     <div style={styles.formGroup}>
-                        <label style={styles.label}>Billed To</label>
+                        <label style={styles.label}>Accepted by</label>
                         <input
                             type="text"
                             name="BilledTo"
                             value={formData.BilledTo}
                             onChange={handleChange}
-                            style={styles.input}
+                            style={{ ...styles.input, backgroundColor: '#f3f4f6', cursor: 'not-allowed' }}
+                            readOnly
                             required
                         />
                     </div>

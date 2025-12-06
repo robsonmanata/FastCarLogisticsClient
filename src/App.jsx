@@ -10,7 +10,9 @@ import Inventory from './inventory/inventory';
 import Orders from './orders/orders';
 import Categories from './categories/categories';
 import Settings from './settings/settings';
-import Warehouse from './warehouse/warehouse';
+
+import Transactions from './transactions/transactions';
+import Notifications from './notifications/notifications';
 
 import './App.css';
 
@@ -38,7 +40,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/FastCarLogisticsClient/">
       <AddProductModal />
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -48,7 +50,9 @@ function App() {
 
         <Route path="/categories" element={<Categories />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/warehouse" element={<Warehouse />} />
+
+        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/notifications" element={<Notifications />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

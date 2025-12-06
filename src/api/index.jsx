@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:3001' });
+const API = axios.create({ baseURL: window.location.hostname === 'localhost' ? 'http://localhost:3001' : 'https://fastcarlogistics-c9b44e17fb11.herokuapp.com/' });
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('profile')) {
@@ -20,10 +20,7 @@ export const createCategory = (newCategory) => API.post('/categories', newCatego
 export const updateCategory = (id, updatedCategory) => API.patch(`/categories/${id}`, updatedCategory);
 export const deleteCategory = (id) => API.delete(`/categories/${id}`);
 
-export const getWarehouses = () => API.get('/warehouses');
-export const createWarehouse = (newWarehouse) => API.post('/warehouses', newWarehouse);
-export const updateWarehouse = (id, updatedWarehouse) => API.patch(`/warehouses/${id}`, updatedWarehouse);
-export const deleteWarehouse = (id) => API.delete(`/warehouses/${id}`);
+
 
 export const getUsers = () => API.get('/user');
 export const createUser = (newUser) => API.post('/user', newUser);
@@ -34,6 +31,11 @@ export const fetchOrders = () => API.get('/orders');
 export const createOrder = (newOrder) => API.post('/orders', newOrder);
 export const updateOrder = (id, updatedOrder) => API.patch(`/orders/${id}`, updatedOrder);
 export const deleteOrder = (id) => API.delete(`/orders/${id}`);
+
+export const fetchTransactions = () => API.get('/transactions');
+
+export const fetchNotifications = () => API.get('/notifications');
+export const markNotificationAsRead = (id, data) => API.patch(`/notifications/${id}/read`, data);
 
 
 

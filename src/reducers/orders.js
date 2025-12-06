@@ -3,7 +3,7 @@ export default (orders = [], action) => {
         case 'FETCH_ALL_ORDERS':
             return action.payload;
         case 'CREATE_ORDER':
-            return [...orders, action.payload];
+            return [action.payload, ...orders];
         case 'UPDATE_ORDER':
             return orders.map((order) => (order._id === action.payload._id ? action.payload : order));
         case 'DELETE_ORDER':

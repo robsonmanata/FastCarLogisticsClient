@@ -10,6 +10,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import SearchIcon from '@mui/icons-material/Search';
 import * as api from '../api/index';
 import { openAddProductModal } from '../actions/ui';
+import { getNotifications } from '../actions/notifications';
+import Badge from '@mui/material/Badge';
 
 const TopBar = () => {
     const styles = new TopBarStyles();
@@ -17,6 +19,8 @@ const TopBar = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
+    const notifications = useSelector((state) => state.notifications);
+    const unreadCount = notifications.filter((n) => !n.readBy?.some(r => r.userId === user?.result?._id || r.userId === user?.result?.googleId)).length;
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
@@ -33,6 +37,7 @@ const TopBar = () => {
     ];
 
     useEffect(() => {
+        dispatch(getNotifications());
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
                 setShowResults(false);
@@ -43,7 +48,7 @@ const TopBar = () => {
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, []);
+    }, [dispatch]);
 
     const handleSearch = (e) => {
         const term = e.target.value;
@@ -114,7 +119,11 @@ const TopBar = () => {
             <div style={styles.actions}>
                 <AppsIcon style={styles.icon} titleAccess="Menu" />
                 <ChatBubbleOutlineIcon style={styles.icon} titleAccess="Chat" />
-                <NotificationsNoneIcon style={styles.icon} titleAccess="Notifications" />
+                <div style={{ cursor: 'pointer' }} onClick={() => navigate('/notifications')}>
+                    <Badge badgeContent={unreadCount} color="error">
+                        <NotificationsNoneIcon style={styles.icon} titleAccess="Notifications" />
+                    </Badge>
+                </div>
                 <div style={styles.avatar}>
                     {user?.result?.profilePicture ? (
                         <img src={user.result.profilePicture} alt={user.result.name} style={styles.avatarImage} />

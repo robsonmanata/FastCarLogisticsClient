@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signin, signup } from '../actions/user';
 import { LoginStyles } from './loginstyle';
-import loginImage from '../assets/blueTruck.webp';
+import loginImage from '../assets/szybkiutojpg.jpg';
 import logoImage from '../assets/fastcarlogo.webp';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';

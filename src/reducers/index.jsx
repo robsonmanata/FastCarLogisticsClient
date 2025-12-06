@@ -2,10 +2,13 @@ import { combineReducers } from 'redux';
 
 import products from './products';
 import categories from './categories';
+import transactions from './transactions';
+
 import user from './user';
-import warehouses from './warehouses';
+
 import auth from './auth';
 import ui from './ui';
 import orders from './orders';
+import notifications from './notifications';
 
-export default combineReducers({ products, categories, user, warehouses, ui, auth, orders });
+export default combineReducers({ products, categories, transactions, user, ui, auth, orders, notifications });

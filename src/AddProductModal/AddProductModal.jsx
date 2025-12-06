@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
-import { createProduct, updateProduct } from '../actions/products';
+import { createProduct, updateProduct, deleteProduct } from '../actions/products';
 import { createCategory } from '../actions/categories';
 import { closeAddProductModal, setCurrentProductId } from '../actions/ui';
 import { AddProductModalStyles } from './AddProductModalStyle';
 
 import imageCompression from 'browser-image-compression';
+
+import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
 
 const AddProductModal = () => {
     const styles = new AddProductModalStyles();
@@ -15,6 +17,8 @@ const AddProductModal = () => {
     const currentProductId = useSelector((state) => state.ui.currentProductId);
     const productToEdit = useSelector((state) => currentProductId ? state.products.find((p) => p._id === currentProductId) : null);
     const categories = useSelector((state) => state.categories);
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const userName = user?.result?.name || user?.result?.givenName + ' ' + user?.result?.familyName || 'Unknown User';
 
     const [formData, setFormData] = useState({
         ProductName: '',
@@ -32,6 +36,7 @@ const AddProductModal = () => {
     });
     const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     React.useEffect(() => {
         if (productToEdit) {
@@ -109,10 +114,10 @@ const AddProductModal = () => {
 
         if (currentProductId) {
             console.log('Dispatching updateProduct...');
-            await dispatch(updateProduct(currentProductId, formData));
+            await dispatch(updateProduct(currentProductId, { ...formData, User: userName }));
         } else {
             console.log('Dispatching createProduct...');
-            await dispatch(createProduct(formData));
+            await dispatch(createProduct({ ...formData, User: userName }));
         }
         setIsLoading(false);
         dispatch(closeAddProductModal());
@@ -136,141 +141,169 @@ const AddProductModal = () => {
         console.log(formData);
     };
 
+    const handleDelete = () => {
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = async () => {
+        setIsLoading(true);
+        await dispatch(deleteProduct(currentProductId));
+        setIsLoading(false);
+        setIsDeleteModalOpen(false);
+        dispatch(closeAddProductModal());
+        dispatch(setCurrentProductId(null));
+    };
+
     if (!isPopupOpen) return null;
 
     return (
-        <div style={styles.overlay}>
-            <div style={styles.popup}>
-                <div style={styles.popupHeader}>
-                    <h2 style={styles.popupTitle}>{currentProductId ? 'Edit Product' : 'New SKU'}</h2>
-                    <button style={styles.closeButton} onClick={() => { dispatch(closeAddProductModal()); dispatch(setCurrentProductId(null)); }}>
-                        <CloseIcon />
-                    </button>
-                </div>
-                <form style={styles.form} onSubmit={handleSubmit}>
-                    <div style={styles.formRow}>
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Part Name</label>
-                            <input
-                                type="text"
-                                name="ProductName"
-                                value={formData.ProductName}
-                                onChange={handleInputChange}
-                                style={styles.input}
-                                required
-                            />
-                        </div>
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Category</label>
-                            <select
-                                name="ProductCategory"
-                                value={isAddingNewCategory ? 'add_new_category' : formData.ProductCategory}
-                                onChange={handleInputChange}
-                                style={styles.select}
-                                required
-                            >
-                                <option value="">Select Category</option>
-                                {categories && categories.map((cat) => (
-                                    <option key={cat._id} value={cat.CategoryName}>
-                                        {cat.CategoryName}
-                                    </option>
-                                ))}
-                                <option value="add_new_category">Add new category</option>
-                            </select>
-                            {isAddingNewCategory && (
+        <>
+            <div style={styles.overlay}>
+                <div style={styles.popup}>
+                    <div style={styles.popupHeader}>
+                        <h2 style={styles.popupTitle}>{currentProductId ? 'Edit Product' : 'New SKU'}</h2>
+                        <button style={styles.closeButton} onClick={() => { dispatch(closeAddProductModal()); dispatch(setCurrentProductId(null)); }}>
+                            <CloseIcon />
+                        </button>
+                    </div>
+                    <form style={styles.form} onSubmit={handleSubmit}>
+                        <div style={styles.formRow}>
+                            <div style={styles.formGroup}>
+                                <label style={styles.label}>Part Name</label>
                                 <input
                                     type="text"
-                                    placeholder="Enter new category name"
-                                    value={newCategoryName}
-                                    onChange={handleNewCategoryChange}
-                                    style={{ ...styles.input, marginTop: '0.5rem' }}
+                                    name="ProductName"
+                                    value={formData.ProductName}
+                                    onChange={handleInputChange}
+                                    style={styles.input}
                                     required
                                 />
+                            </div>
+                            <div style={styles.formGroup}>
+                                <label style={styles.label}>Category</label>
+                                <select
+                                    name="ProductCategory"
+                                    value={isAddingNewCategory ? 'add_new_category' : formData.ProductCategory}
+                                    onChange={handleInputChange}
+                                    style={styles.select}
+                                    required
+                                >
+                                    <option value="">Select Category</option>
+                                    {categories && categories.map((cat) => (
+                                        <option key={cat._id} value={cat.CategoryName}>
+                                            {cat.CategoryName}
+                                        </option>
+                                    ))}
+                                    <option value="add_new_category">Add new category</option>
+                                </select>
+                                {isAddingNewCategory && (
+                                    <input
+                                        type="text"
+                                        placeholder="Enter new category name"
+                                        value={newCategoryName}
+                                        onChange={handleNewCategoryChange}
+                                        style={{ ...styles.input, marginTop: '0.5rem' }}
+                                        required
+                                    />
+                                )}
+                            </div>
+                        </div>
+
+                        <div style={styles.formRow}>
+                            <div style={styles.formGroup}>
+                                <label style={styles.label}>SKU</label>
+                                <input
+                                    type="text"
+                                    name="ProductSKU"
+                                    value={formData.ProductSKU}
+                                    onChange={handleInputChange}
+                                    style={styles.input}
+                                    required
+                                />
+                            </div>
+                            <div style={styles.formGroup}>
+                                <label style={styles.label}>Price</label>
+                                <input
+                                    type="number"
+                                    name="ProductPrice"
+                                    value={formData.ProductPrice}
+                                    onChange={handleInputChange}
+                                    style={styles.input}
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div style={styles.formRow}>
+                            <div style={styles.formGroup}>
+                                <label style={styles.label}>Quantity</label>
+                                <input
+                                    type="number"
+                                    name="ProductQuantity"
+                                    value={formData.ProductQuantity}
+                                    onChange={handleInputChange}
+                                    style={styles.input}
+                                    required
+                                />
+                            </div>
+                            <div style={styles.formGroup}>
+                                <label style={styles.label}>Barcode</label>
+                                <input
+                                    type="text"
+                                    name="ProductBarcode"
+                                    value={formData.ProductBarcode}
+                                    onChange={handleInputChange}
+                                    style={styles.input}
+                                />
+                            </div>
+                        </div>
+
+                        <div style={styles.formGroup}>
+                            <label style={styles.label}>Description</label>
+                            <textarea
+                                name="ProductDescription"
+                                value={formData.ProductDescription}
+                                onChange={handleInputChange}
+                                style={{ ...styles.input, height: '60px', resize: 'vertical' }}
+                            />
+                        </div>
+
+                        <div style={styles.formGroup}>
+                            <label style={styles.fileInputLabel}>
+                                {formData.ProductImage ? 'Image Uploaded' : 'Upload Product Image'}
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    style={styles.fileInput}
+                                />
+                            </label>
+                        </div>
+
+                        <div style={styles.buttonGroup}>
+                            <button type="submit" disabled={isLoading} style={{ ...styles.submitButton, backgroundColor: isLoading ? '#9ca3af' : styles.submitButton.backgroundColor, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+                                {isLoading ? 'Processing...' : 'Submit'}
+                            </button>
+                            {currentProductId && (
+                                <button type="button" onClick={handleDelete} disabled={isLoading} style={{ ...styles.deleteButton, backgroundColor: isLoading ? '#9ca3af' : styles.deleteButton.backgroundColor, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+                                    Delete
+                                </button>
                             )}
+                            <button type="button" style={styles.cancelButton} onClick={() => { dispatch(closeAddProductModal()); dispatch(setCurrentProductId(null)); }}>Cancel</button>
                         </div>
-                    </div>
-
-                    <div style={styles.formRow}>
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>SKU</label>
-                            <input
-                                type="text"
-                                name="ProductSKU"
-                                value={formData.ProductSKU}
-                                onChange={handleInputChange}
-                                style={styles.input}
-                                required
-                            />
-                        </div>
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Price</label>
-                            <input
-                                type="number"
-                                name="ProductPrice"
-                                value={formData.ProductPrice}
-                                onChange={handleInputChange}
-                                style={styles.input}
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <div style={styles.formRow}>
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Quantity</label>
-                            <input
-                                type="number"
-                                name="ProductQuantity"
-                                value={formData.ProductQuantity}
-                                onChange={handleInputChange}
-                                style={styles.input}
-                                required
-                            />
-                        </div>
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Barcode</label>
-                            <input
-                                type="text"
-                                name="ProductBarcode"
-                                value={formData.ProductBarcode}
-                                onChange={handleInputChange}
-                                style={styles.input}
-                            />
-                        </div>
-                    </div>
-
-                    <div style={styles.formGroup}>
-                        <label style={styles.label}>Description</label>
-                        <textarea
-                            name="ProductDescription"
-                            value={formData.ProductDescription}
-                            onChange={handleInputChange}
-                            style={{ ...styles.input, height: '60px', resize: 'vertical' }}
-                        />
-                    </div>
-
-                    <div style={styles.formGroup}>
-                        <label style={styles.fileInputLabel}>
-                            {formData.ProductImage ? 'Image Uploaded' : 'Upload Product Image'}
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                style={styles.fileInput}
-                            />
-                        </label>
-                    </div>
-
-                    <div style={styles.buttonGroup}>
-                        <button type="submit" disabled={isLoading} style={{ ...styles.submitButton, backgroundColor: isLoading ? '#9ca3af' : styles.submitButton.backgroundColor, cursor: isLoading ? 'not-allowed' : 'pointer' }}>
-                            {isLoading ? 'Processing...' : 'Submit'}
-                        </button>
-                        <button type="button" style={styles.cancelButton} onClick={() => { dispatch(closeAddProductModal()); dispatch(setCurrentProductId(null)); }}>Cancel</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
+            <ConfirmationModal
+                isOpen={isDeleteModalOpen}
+                title="Delete Product"
+                message="Are you sure you want to delete this product? This action cannot be undone."
+                onConfirm={confirmDelete}
+                onCancel={() => setIsDeleteModalOpen(false)}
+            />
+        </>
     );
 };
+
 
 export default AddProductModal;

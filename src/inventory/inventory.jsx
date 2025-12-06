@@ -36,7 +36,9 @@ const Inventory = () => {
     const handleSubmitRestock = (e) => {
         e.preventDefault();
         if (restockItem && restockAmount) {
-            const updatedProduct = { ...restockItem, ProductQuantity: Number(restockItem.ProductQuantity) + Number(restockAmount) };
+            const user = JSON.parse(localStorage.getItem('profile'));
+            const userName = user?.result?.name || user?.result?.givenName + ' ' + user?.result?.familyName || 'Unknown User';
+            const updatedProduct = { ...restockItem, ProductQuantity: Number(restockItem.ProductQuantity) + Number(restockAmount), User: userName };
             dispatch(updateProduct(restockItem._id, updatedProduct));
             setRestockItem(null);
             setRestockAmount('');
@@ -62,10 +64,14 @@ const Inventory = () => {
                 return;
             }
 
+            const user = JSON.parse(localStorage.getItem('profile'));
+            const userName = user?.result?.name || user?.result?.givenName + ' ' + user?.result?.familyName || 'Unknown User';
+
             const updatedProduct = {
                 ...utilizeItem,
                 ProductQuantity: currentQty - usedAmount,
-                ProductQuantityUsed: (Number(utilizeItem.ProductQuantityUsed) || 0) + usedAmount
+                ProductQuantityUsed: (Number(utilizeItem.ProductQuantityUsed) || 0) + usedAmount,
+                User: userName
             };
             dispatch(updateProduct(utilizeItem._id, updatedProduct));
             setUtilizeItem(null);

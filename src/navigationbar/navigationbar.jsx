@@ -10,6 +10,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import StoreIcon from '@mui/icons-material/Store';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 
 
@@ -28,7 +29,8 @@ const NavigationBar = () => {
         { label: 'Orders', path: '/orders', icon: <InventoryIcon /> },
 
         { label: 'Categories', path: '/categories', icon: <CategoryIcon /> },
-        { label: 'Warehouse', path: '/warehouse', icon: <StoreIcon /> },
+
+        { label: 'Transactions', path: '/transactions', icon: <ReceiptLongIcon /> },
         { label: 'Finances', path: '/finances', icon: <MonetizationOnIcon /> },
         { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
     ];
