@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: window.location.hostname === 'localhost' ? 'https://fastcarlogistics-c9b44e17fb11.herokuapp.com' });
+const API = axios.create({ baseURL: 'https://fastcarlogistics-c9b44e17fb11.herokuapp.com' });
 
 API.interceptors.request.use((req) => {
     if (localStorage.getItem('profile')) {
