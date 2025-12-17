@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TransactionsStyles } from './transactionsstyle';
+
+import Pagination from '../components/Pagination/Pagination';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
 import { getTransactions } from '../actions/transactions';
@@ -9,16 +11,21 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 
 const Transactions = () => {
     const styles = new TransactionsStyles();
+
     const dispatch = useDispatch();
-    const transactions = useSelector((state) => state.transactions);
+    const { items: transactions, meta } = useSelector((state) => state.transactions);
 
     const [searchQuery, setSearchQuery] = useState('');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filterType, setFilterType] = useState('');
     const [filterDate, setFilterDate] = useState({ start: '', end: '' });
 
+    const page = meta?.currentPage || 1;
+    const totalCount = meta?.totalCount || 0;
+    const numberOfPages = meta?.numberOfPages || 1;
+
     useEffect(() => {
-        dispatch(getTransactions());
+        dispatch(getTransactions(1));
     }, [dispatch]);
 
     const filteredTransactions = transactions.filter((transaction) => {
@@ -164,10 +171,19 @@ const Transactions = () => {
                                 )}
                             </tbody>
                         </table>
+
                     </div>
+                    {transactions?.length > 0 && (
+                        <Pagination
+                            page={Number(page)}
+                            count={numberOfPages}
+                            total={totalCount}
+                            onChange={(val) => dispatch(getTransactions(val))}
+                        />
+                    )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

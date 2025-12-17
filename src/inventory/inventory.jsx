@@ -10,15 +10,24 @@ import AddIcon from '@mui/icons-material/Add';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { openAddProductModal, setCurrentProductId } from '../actions/ui';
-import { updateProduct } from '../actions/products';
+import { updateProduct, getProducts } from '../actions/products';
+import Pagination from '../components/Pagination/Pagination';
 
 const Inventory = () => {
     const styles = new InventoryStyles();
     const dispatch = useDispatch();
-    const posts = useSelector((state) => state.products);
+    const { items: posts, meta } = useSelector((state) => state.products);
     const categories = useSelector((state) => state.categories);
     console.log('Products:', posts);
     console.log('Categories:', categories);
+
+    const page = meta?.currentPage || 1;
+    const totalCount = meta?.totalCount || 0;
+    const numberOfPages = meta?.numberOfPages || 1;
+
+    React.useEffect(() => {
+        dispatch(getProducts(1));
+    }, [dispatch]);
 
     const handleEdit = (id) => {
         dispatch(setCurrentProductId(id));
@@ -291,8 +300,16 @@ const Inventory = () => {
                             ))}
                         </tbody>
                     </table>
+                    {posts?.length > 0 && (
+                        <Pagination
+                            page={Number(page)}
+                            count={numberOfPages}
+                            total={totalCount}
+                            onChange={(val) => dispatch(getProducts(val))}
+                        />
+                    )}
                 </div>
-            </div >
+            </div>
             {restockItem && (
                 <div style={styles.popupOverlay}>
                     <div style={styles.popupContainer}>

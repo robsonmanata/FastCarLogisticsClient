@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { getProducts } from './actions/products';
 import { getCategories } from './actions/categories';
+import { getNotifications } from './actions/notifications';
 import Login from './login/login';
 import Dashboard from './dashboard/dashboard';
 import Inventory from './inventory/inventory';
@@ -37,6 +38,16 @@ function App() {
 
     dispatch(getProducts());
     dispatch(getCategories());
+
+    // Initial fetch
+    dispatch(getNotifications(1));
+
+    // Poll for notifications every 10 seconds
+    const intervalId = setInterval(() => {
+      dispatch(getNotifications(1));
+    }, 10000);
+
+    return () => clearInterval(intervalId);
   }, [dispatch]);
 
   return (

@@ -1,8 +1,8 @@
 import * as api from '../api';
 
-export const getNotifications = () => async (dispatch) => {
+export const getNotifications = (page) => async (dispatch) => {
     try {
-        const { data } = await api.fetchNotifications();
+        const { data } = await api.fetchNotifications(page);
         dispatch({ type: 'FETCH_NOTIFICATIONS', payload: data });
     } catch (error) {
         console.log(error);

@@ -10,18 +10,22 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { getOrders } from '../actions/orders';
 import AddOrderModal from '../AddOrderModal/AddOrderModal';
+import Pagination from '../components/Pagination/Pagination';
 
 const Orders = () => {
     const styles = new OrdersStyles();
     const dispatch = useDispatch();
-    const orders = useSelector((state) => state.orders);
+    const { items: orders, meta } = useSelector((state) => state.orders);
     const [expandedRow, setExpandedRow] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const [currentId, setCurrentId] = useState(null);
+    const page = meta?.currentPage || 1;
+    const totalCount = meta?.totalCount || 0;
+    const numberOfPages = meta?.numberOfPages || 1;
 
     useEffect(() => {
-        dispatch(getOrders());
+        dispatch(getOrders(1));
     }, [dispatch]);
 
     console.log('Orders state:', orders);
@@ -152,10 +156,18 @@ const Orders = () => {
                             </tbody>
                         </table>
                     </div>
+                    {orders?.length > 0 && (
+                        <Pagination
+                            page={Number(page)}
+                            count={numberOfPages}
+                            total={totalCount}
+                            onChange={(val) => dispatch(getOrders(val))}
+                        />
+                    )}
                 </div>
             </div>
             {isAddModalOpen && <AddOrderModal currentId={currentId} setCurrentId={setCurrentId} onClose={() => { setIsAddModalOpen(false); setCurrentId(null); }} />}
-        </div>
+        </div >
     );
 };
 

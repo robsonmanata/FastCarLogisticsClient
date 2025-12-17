@@ -10,7 +10,7 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const getProducts = () => API.get('/products');
+export const getProducts = (page) => API.get(`/products?page=${page}`);
 export const createProduct = (newProduct) => API.post('/products', newProduct);
 export const updateProduct = (id, updatedProduct) => API.patch(`/products/${id}`, updatedProduct);
 export const deleteProduct = (id) => API.delete(`/products/${id}`);
@@ -27,14 +27,14 @@ export const createUser = (newUser) => API.post('/user', newUser);
 export const updateUser = (id, updatedUser) => API.patch(`/user/${id}`, updatedUser);
 export const deleteUser = (id) => API.delete(`/user/${id}`);
 
-export const fetchOrders = () => API.get('/orders');
+export const fetchOrders = (page) => API.get(`/orders?page=${page}`);
 export const createOrder = (newOrder) => API.post('/orders', newOrder);
 export const updateOrder = (id, updatedOrder) => API.patch(`/orders/${id}`, updatedOrder);
 export const deleteOrder = (id) => API.delete(`/orders/${id}`);
 
-export const fetchTransactions = () => API.get('/transactions');
+export const fetchTransactions = (page) => API.get(`/transactions?page=${page}`);
 
-export const fetchNotifications = () => API.get('/notifications');
+export const fetchNotifications = (page) => API.get(`/notifications?page=${page}`);
 export const markNotificationAsRead = (id, data) => API.patch(`/notifications/${id}/read`, data);
 
 

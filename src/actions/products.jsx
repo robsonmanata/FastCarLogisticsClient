@@ -1,8 +1,8 @@
 import * as api from '../api/index';
 
-export const getProducts = () => async (dispatch) => {
+export const getProducts = (page) => async (dispatch) => {
     try {
-        const { data } = await api.getProducts();
+        const { data } = await api.getProducts(page);
 
         dispatch({ type: 'FETCH_ALL_Products', payload: data });
     } catch (error) {

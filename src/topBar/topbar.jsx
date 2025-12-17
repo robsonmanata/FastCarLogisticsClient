@@ -19,7 +19,7 @@ const TopBar = () => {
     const location = useLocation();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
-    const notifications = useSelector((state) => state.notifications);
+    const { items: notifications } = useSelector((state) => state.notifications);
     const unreadCount = notifications.filter((n) => !n.readBy?.some(r => r.userId === user?.result?._id || r.userId === user?.result?.googleId)).length;
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -37,7 +37,7 @@ const TopBar = () => {
     ];
 
     useEffect(() => {
-        dispatch(getNotifications());
+        dispatch(getNotifications(1));
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
                 setShowResults(false);

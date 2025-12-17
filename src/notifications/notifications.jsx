@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNotifications, markAsRead } from '../actions/notifications';
 import { NotificationStyles } from './notificationsstyle';
+import Pagination from '../components/Pagination/Pagination';
 
 import moment from 'moment';
 import TopBar from '../topBar/topbar';
@@ -10,12 +11,15 @@ import NavigationBar from '../navigationbar/navigationbar';
 const Notifications = () => {
     const styles = new NotificationStyles();
     const dispatch = useDispatch();
-    const notifications = useSelector((state) => state.notifications);
+    const { items: notifications, meta } = useSelector((state) => state.notifications);
+    const page = meta?.currentPage || 1;
+    const totalCount = meta?.totalCount || 0;
+    const numberOfPages = meta?.numberOfPages || 1;
 
     const user = useSelector((state) => state.auth.authData);
 
     useEffect(() => {
-        dispatch(getNotifications());
+        dispatch(getNotifications(1));
     }, [dispatch]);
 
     const handleNotificationClick = (id, readBy) => {
@@ -54,7 +58,9 @@ const Notifications = () => {
                                     >
                                         <div style={styles.notificationContent}>
                                             <span style={styles.message}>{notification.message}</span>
-                                            <span style={styles.date}>{moment(notification.createdAt).fromNow()}</span>
+                                            <span style={styles.date}>
+                                                {moment(notification.createdAt).format('MMMM Do YYYY, h:mm:ss a')} ({moment(notification.createdAt).fromNow()})
+                                            </span>
                                         </div>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                                             {notification.readBy?.map((reader, index) => (
@@ -80,10 +86,20 @@ const Notifications = () => {
                                 );
                             })
                         )}
+
                     </div>
+                    {notifications?.length > 0 && (
+                        <Pagination
+                            page={Number(page)}
+                            count={numberOfPages}
+                            total={totalCount}
+                            onChange={(val) => dispatch(getNotifications(val))}
+                        />
+                    )}
                 </div>
             </div>
         </div>
+
     );
 };
 

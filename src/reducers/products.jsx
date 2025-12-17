@@ -1,14 +1,21 @@
-export default (products = [], action) => {
+export default (state = { items: [], meta: {} }, action) => {
     switch (action.type) {
         case 'FETCH_ALL_Products':
-            return action.payload;
+            return {
+                items: action.payload.data,
+                meta: {
+                    currentPage: action.payload.currentPage,
+                    numberOfPages: action.payload.numberOfPages,
+                    totalCount: action.payload.totalCount
+                }
+            };
         case 'CREATE_Product':
-            return [...products, action.payload];
+            return { ...state, items: [action.payload, ...state.items] };
         case 'UPDATE_PRODUCT':
-            return products.map((product) => product._id === action.payload._id ? action.payload : product);
+            return { ...state, items: state.items.map((product) => product._id === action.payload._id ? action.payload : product) };
         case 'DELETE_PRODUCT':
-            return products.filter((product) => product._id !== action.payload);
+            return { ...state, items: state.items.filter((product) => product._id !== action.payload) };
         default:
-            return products;
+            return state;
     }
 }
