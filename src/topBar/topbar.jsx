@@ -20,7 +20,7 @@ const TopBar = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
     const { items: notifications } = useSelector((state) => state.notifications);
-    const unreadCount = notifications.filter((n) => !n.readBy?.some(r => r.userId === user?.result?._id || r.userId === user?.result?.googleId)).length;
+    const unreadCount = notifications?.filter?.((n) => !n.readBy?.some(r => r.userId === user?.result?._id || r.userId === user?.result?.googleId))?.length || 0;
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
