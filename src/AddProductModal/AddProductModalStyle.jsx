@@ -11,14 +11,15 @@ export class AddProductModalStyles {
         justifyContent: 'flex-end',
     };
     popup = {
-        width: '400px',
+        width: '500px',
         backgroundColor: 'white',
-        height: '100%',
+        maxHeight: '90vh', // Prevent it from exceeding viewport height
         padding: '1.5rem',
+        borderRadius: '12px', // Smoother corners
         boxShadow: '-4px 0 15px rgba(0, 0, 0, 0.1)',
         display: 'flex',
         flexDirection: 'column',
-        overflowY: 'auto',
+        overflowY: 'auto', // Enable scrolling if content is too long
     };
     popupHeader = {
         display: 'flex',
@@ -41,7 +42,7 @@ export class AddProductModalStyles {
     form = {
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.75rem',
+        gap: '0.5rem', // Reduced gap for compactness
     };
     formRow = {
         display: 'flex',
@@ -77,7 +78,7 @@ export class AddProductModalStyles {
     buttonGroup = {
         display: 'flex',
         gap: '1rem',
-        marginTop: '1.5rem',
+        marginTop: '1rem',
     };
     submitButton = {
         flex: 1,

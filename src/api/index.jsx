@@ -32,8 +32,8 @@ export const createOrder = (newOrder) => API.post('/orders', newOrder);
 export const updateOrder = (id, updatedOrder) => API.patch(`/orders/${id}`, updatedOrder);
 export const deleteOrder = (id) => API.delete(`/orders/${id}`);
 
-export const fetchDashboardStats = () => API.get('/dashboard');
-export const fetchFinanceStats = () => API.get('/finances/stats');
+export const fetchDashboardStats = (year) => API.get(`/dashboard${year ? `?year=${year}` : ''}`);
+export const fetchFinanceStats = (year) => API.get(`/finances/stats${year ? `?year=${year}` : ''}`);
 
 export const fetchTransactions = (page) => API.get(`/transactions?page=${page}`);
 

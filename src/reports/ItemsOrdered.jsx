@@ -79,7 +79,7 @@ const ItemsOrdered = () => {
                                                 )}
                                             </td>
                                             <td style={styles.td}>{item.ProductName}</td>
-                                            <td style={styles.td}>{item.Quantity}</td>
+                                            <td style={styles.td}>{(Number(item.Quantity) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
                                             <td style={styles.td}>{item.customer}</td>
                                         </tr>
                                     ))

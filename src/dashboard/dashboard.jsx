@@ -14,9 +14,21 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const stats = useSelector((state) => state.dashboard);
 
+  // Year selection state
+  const [selectedYear, setSelectedYear] = React.useState(''); // Defaults to empty, will be set by stats.year
+
   useEffect(() => {
-    dispatch(getDashboardStats());
-  }, [dispatch]);
+    dispatch(getDashboardStats(selectedYear));
+  }, [dispatch, selectedYear]);
+
+  // Sync state with backend response effectively
+  useEffect(() => {
+    if (!selectedYear && stats?.graphData?.year) {
+      setSelectedYear(stats.graphData.year);
+    }
+  }, [stats?.graphData?.year]);
+
+  console.log('Dashboard Stats:', stats);
 
   const activityCards = [
     { value: stats?.products || 0, label: 'Items', sub: 'Qty', path: '/inventory' },
@@ -33,7 +45,10 @@ const Dashboard = () => {
         <NavigationBar />
         <div style={styles.mainContent} className="main-content">
           <div>
-            <h2 style={styles.sectionTitle}>Recent activity</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+              <h2 style={{ ...styles.sectionTitle, marginBottom: 0 }}>Recent activity</h2>
+            </div>
+
             <div style={styles.cardsGrid}>
               {activityCards.map((card, index) => (
                 <div
@@ -43,7 +58,7 @@ const Dashboard = () => {
                   onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
                   onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                  <div style={styles.cardValue}>{card.value}</div>
+                  <div style={styles.cardValue}>{(Number(card.value) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</div>
                   <div style={styles.cardSubLabel}>{card.sub}</div>
                   <div style={styles.cardLabel}>{card.label}</div>
                 </div>
@@ -61,7 +76,7 @@ const Dashboard = () => {
                 >
                   <span style={styles.lowStock}>Low stock items</span>
                   <div style={styles.stockValueContainer}>
-                    <span style={styles.lowStockValue}>{stats?.lowStock || 0}</span>
+                    <span style={styles.lowStockValue}>{(stats?.lowStock || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</span>
                     <div style={styles.dot}></div>
                   </div>
                 </div>
@@ -70,14 +85,14 @@ const Dashboard = () => {
                   onClick={() => navigate('/categories')}
                 >
                   <span style={styles.stockLabel}>Item categories</span>
-                  <span style={styles.stockValue}>{stats?.categories || 0}</span>
+                  <span style={styles.stockValue}>{(stats?.categories || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</span>
                 </div>
                 <div
                   style={{ ...styles.stockRow, cursor: 'pointer' }}
                   onClick={() => navigate('/items-used')}
                 >
                   <span style={styles.stockLabel}>Items used</span>
-                  <span style={styles.stockValue}>{stats?.itemsUsed || 0}</span>
+                  <span style={styles.stockValue}>{(stats?.itemsUsed || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</span>
                 </div>
               </div>
             </div>
@@ -117,7 +132,33 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <BarGraph />
+
+          {/* Year Selector and Graph */}
+          <div style={{ marginTop: '2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+              {stats?.graphData?.availableYears?.length > 0 && (
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(e.target.value)}
+                  style={{
+                    padding: '0.5rem 1rem',
+                    borderRadius: '8px',
+                    border: '1px solid #d1d5db',
+                    backgroundColor: 'white',
+                    color: '#374151',
+                    fontSize: '0.875rem',
+                    outline: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {stats.graphData.availableYears.map(year => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
+              )}
+            </div>
+            <BarGraph data={stats?.graphData} />
+          </div>
         </div>
       </div>
     </div>

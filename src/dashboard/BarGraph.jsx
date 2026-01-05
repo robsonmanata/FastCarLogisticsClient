@@ -30,30 +30,59 @@ const options = {
             text: 'Items Ordered vs Items Used',
         },
     },
+    scales: {
+        x: {
+            ticks: {
+                autoSkip: false,
+                maxRotation: 45,
+                minRotation: 45
+            }
+        }
+    }
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const BarGraph = ({ data }) => {
+    // If no data provided, default to empty structure to prevent errors
+    const chartData = data || {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        datasets: []
+    };
 
-const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Items Order',
-            data: [65, 59, 80, 81, 56, 55, 40],
-            backgroundColor: '#244373', // Blue
-        },
-        {
-            label: 'Items Used',
-            data: [28, 48, 40, 19, 86, 27, 90],
-            backgroundColor: '#f77529', // Orange
-        },
-    ],
-};
+    // Update chart title if year is available
+    const chartYear = chartData.year || '';
+    const titleText = `Items Ordered vs Items Used ${chartYear ? `(${chartYear})` : ''}`;
 
-const BarGraph = () => {
+    // Clone options to avoid mutating global reference if using strict mode or reuse
+    const chartOptions = {
+        ...options,
+        plugins: {
+            ...options.plugins,
+            title: {
+                ...options.plugins.title,
+                text: titleText
+            }
+        }
+    };
+
+    const finalData = {
+        labels: chartData.labels,
+        datasets: [
+            {
+                label: 'Items Ordered',
+                data: chartData.datasets.itemsOrdered || [],
+                backgroundColor: '#244373', // Blue
+            },
+            {
+                label: 'Items Used',
+                data: chartData.datasets.itemsUsed || [],
+                backgroundColor: '#f77529', // Orange
+            },
+        ],
+    };
+
     return (
         <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', marginTop: '2rem' }}>
-            <Bar options={options} data={data} />
+            <Bar options={chartOptions} data={finalData} />
         </div>
     );
 };

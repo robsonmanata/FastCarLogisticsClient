@@ -108,7 +108,7 @@ const Orders = () => {
                                                 <td style={styles.td}>{order.OrderNumber}</td>
                                                 <td style={styles.td}>{new Date(order.OrderDate).toLocaleDateString()}</td>
                                                 <td style={styles.td}>{order.BilledTo}</td>
-                                                <td style={styles.td}>${order.Total}</td>
+                                                <td style={styles.td}>${(Number(order.Total) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
                                                 <td style={styles.td}>
                                                     <button style={styles.actionButton} onClick={() => handleEdit(order._id)}>
                                                         Edit
@@ -134,9 +134,9 @@ const Orders = () => {
                                                                         order.Items.map((item, index) => (
                                                                             <tr key={index}>
                                                                                 <td style={styles.itemTd}>{item.ProductName}</td>
-                                                                                <td style={styles.itemTd}>{item.Quantity}</td>
-                                                                                <td style={styles.itemTd}>${item.Price}</td>
-                                                                                <td style={styles.itemTd}>${item.Quantity * item.Price}</td>
+                                                                                <td style={styles.itemTd}>{(Number(item.Quantity) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
+                                                                                <td style={styles.itemTd}>${(Number(item.Price) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
+                                                                                <td style={styles.itemTd}>${(Number(item.Quantity * item.Price) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
                                                                             </tr>
                                                                         ))
                                                                     ) : (

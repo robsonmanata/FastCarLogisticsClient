@@ -32,7 +32,13 @@ const AddProductModal = () => {
         ProductSupplier: '',
         ProductLocation: '',
         ProductQuantityUsed: 0,
-        ProductImage: ''
+        ProductImage: '',
+        ProductSize: '',
+        ProductUnit: '',
+        ProductSubCategory: '',
+        ProductVehicleType: '',
+        ProductPartCode: '',
+        ProductRevision: ''
     });
     const [isAddingNewCategory, setIsAddingNewCategory] = useState(false);
     const [newCategoryName, setNewCategoryName] = useState('');
@@ -54,16 +60,71 @@ const AddProductModal = () => {
                 ProductSupplier: '',
                 ProductLocation: '',
                 ProductQuantityUsed: 0,
-                ProductImage: ''
+                ProductImage: '',
+                ProductSize: '',
+                ProductUnit: '',
+                ProductSubCategory: '',
+                ProductVehicleType: '',
+                ProductPartCode: '',
+                ProductRevision: ''
             });
         }
     }, [productToEdit]);
+
+    // Auto-generate SKU
+    React.useEffect(() => {
+        const { ProductVehicleType, ProductCategory, ProductSubCategory, ProductPartCode, ProductSize, ProductUnit } = formData;
+        if (ProductVehicleType && ProductCategory && ProductSubCategory && ProductPartCode) {
+            // Size is optional for the SKU structure but requested in example 320MM
+            // If size and unit exist, combine them (e.g., 320MM). If only Size (e.g. M12), use Size.
+            let sizePart = '';
+            if (ProductSize) {
+                sizePart = `-${ProductSize}` + (ProductUnit ? ProductUnit.toUpperCase() : '');
+            }
+
+            // Mapping Category Names to Codes if needed, OR assuming values are already Codes.
+            // User requested specific codes: MEC, ELE, etc.
+            // We will update the Category Dropdown to use these codes as values.
+
+            const sku = `${ProductVehicleType}-${ProductCategory}-${ProductSubCategory}-${ProductPartCode}${sizePart}`;
+            setFormData(prev => ({ ...prev, ProductSKU: sku.toUpperCase() }));
+        }
+    }, [formData.ProductVehicleType, formData.ProductCategory, formData.ProductSubCategory, formData.ProductPartCode, formData.ProductSize, formData.ProductUnit]);
+
+    const generatePartCode = (name) => {
+        if (!name) return '';
+        // Remove special chars first (keep letters and spaces) - mostly to avoid '!' or numbers breaking logic if preferred, 
+        // but user only mentioned vowels/consonants. Let's keep it simple: just process the word.
+        const cleanName = name.replace(/[^a-zA-Z\s]/g, '');
+        const words = cleanName.trim().split(/\s+/);
+        // "if for a two word part name... use last word" (implied from previous), actually user said "two or more word product take... last word"
+        const target = words.length > 1 ? words[words.length - 1] : words[0];
+        if (!target) return '';
+
+        const isVowel = (char) => ['A', 'E', 'I', 'O', 'U'].includes(char.toUpperCase());
+        const getConsonants = (str) => str.split('').filter(c => !isVowel(c)).join('');
+
+        let code = '';
+        if (isVowel(target[0])) {
+            // "first letter is a vowel use it then follwed by consonents"
+            const consonants = getConsonants(target.slice(1));
+            code = target[0] + consonants.substring(0, 2);
+        } else {
+            // "none vowel letters" (consonants)
+            const consonants = getConsonants(target);
+            code = consonants.substring(0, 3);
+        }
+        return code.toUpperCase();
+    };
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (name === 'ProductCategory' && value === 'add_new_category') {
             setIsAddingNewCategory(true);
             setFormData({ ...formData, ProductCategory: '' });
+        } else if (name === 'ProductName') {
+            const code = generatePartCode(value);
+            setFormData({ ...formData, ProductName: value, ProductPartCode: code });
         } else {
             setFormData({ ...formData, [name]: value });
         }
@@ -134,7 +195,13 @@ const AddProductModal = () => {
             ProductSupplier: '',
             ProductLocation: '',
             ProductQuantityUsed: 0,
-            ProductImage: ''
+            ProductImage: '',
+            ProductSize: '',
+            ProductUnit: '',
+            ProductSubCategory: '',
+            ProductVehicleType: '',
+            ProductPartCode: '',
+            ProductRevision: ''
         });
         setIsAddingNewCategory(false);
         setNewCategoryName('');
@@ -167,17 +234,34 @@ const AddProductModal = () => {
                         </button>
                     </div>
                     <form style={styles.form} onSubmit={handleSubmit}>
+                        <div style={styles.formGroup}>
+                            <label style={styles.label}>Part Name</label>
+                            <input
+                                type="text"
+                                name="ProductName"
+                                value={formData.ProductName}
+                                onChange={handleInputChange}
+                                style={styles.input}
+                                required
+                            />
+                        </div>
+
                         <div style={styles.formRow}>
                             <div style={styles.formGroup}>
-                                <label style={styles.label}>Part Name</label>
-                                <input
-                                    type="text"
-                                    name="ProductName"
-                                    value={formData.ProductName}
+                                <label style={styles.label}>Vehicle Type</label>
+                                <select
+                                    name="ProductVehicleType"
+                                    value={formData.ProductVehicleType}
                                     onChange={handleInputChange}
-                                    style={styles.input}
+                                    style={styles.select}
                                     required
-                                />
+                                >
+                                    <option value="">Select Vehicle</option>
+                                    <option value="CAR">CAR (Car)</option>
+                                    <option value="TRK">TRK (Truck)</option>
+                                    <option value="VAN">VAN (Van)</option>
+                                    <option value="UNI">UNI (Universal)</option>
+                                </select>
                             </div>
                             <div style={styles.formGroup}>
                                 <label style={styles.label}>Category</label>
@@ -189,6 +273,14 @@ const AddProductModal = () => {
                                     required
                                 >
                                     <option value="">Select Category</option>
+                                    <option value="MEC">MEC (Mechanical)</option>
+                                    <option value="ELE">ELE (Electrical)</option>
+                                    <option value="FLD">FLD (Fluids & lubricants)</option>
+                                    <option value="BOD">BOD (Bodywork)</option>
+                                    <option value="SFT">SFT (Safety)</option>
+                                    <option value="ACC">ACC (Accessories)</option>
+                                    <option value="TIR">TIR (Tyres & wheels)</option>
+
                                     {categories && categories.map((cat) => (
                                         <option key={cat._id} value={cat.CategoryName}>
                                             {cat.CategoryName}
@@ -210,15 +302,61 @@ const AddProductModal = () => {
                         </div>
 
                         <div style={styles.formRow}>
+                            {/* Use inline style for flex ratio specifically for this row's children if needed, 
+                                 but since styles object is used, we might need to override or use inline styles carefully. 
+                                 For safely, I will simply use the class/style provided. 
+                                 If specific flex grow is needed, I'll add it to the style prop. */}
+                            <div style={{ ...styles.formGroup, flex: 2 }}>
+                                <label style={styles.label}>Sub Category</label>
+                                <select
+                                    name="ProductSubCategory"
+                                    value={formData.ProductSubCategory}
+                                    onChange={handleInputChange}
+                                    style={styles.select}
+                                    required
+                                >
+                                    <option value="">Select Sub-Category</option>
+                                    <option value="BRK">BRK (Brakes)</option>
+                                    <option value="ENG">ENG (Engine)</option>
+                                    <option value="TRN">TRN (Transmission)</option>
+                                    <option value="SUS">SUS (Suspension)</option>
+                                    <option value="FUE">FUE (Fuel system)</option>
+                                    <option value="CLU">CLU (Clutch)</option>
+                                    <option value="ALT">ALT (Alternator)</option>
+                                    <option value="STR">STR (Starter)</option>
+                                    <option value="BAT">BAT (Battery)</option>
+                                    <option value="LGT">LGT (Lighting)</option>
+                                    <option value="SNS">SNS (Sensors)</option>
+                                    <option value="OIL">OIL (Engine oil)</option>
+                                    <option value="GRS">GRS (Grease)</option>
+                                    <option value="COO">COO (Coolant)</option>
+                                    <option value="HYD">HYD (Hydraulic fluid)</option>
+                                </select>
+                            </div>
+                            <div style={{ ...styles.formGroup, flex: 1 }}>
+                                <label style={styles.label}>Code</label>
+                                <input
+                                    type="text"
+                                    name="ProductPartCode"
+                                    value={formData.ProductPartCode}
+                                    onChange={(e) => setFormData({ ...formData, ProductPartCode: e.target.value.toUpperCase() })}
+                                    style={styles.input}
+                                    maxLength={4}
+                                    placeholder="DSC"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div style={styles.formRow}>
                             <div style={styles.formGroup}>
-                                <label style={styles.label}>SKU</label>
+                                <label style={styles.label}>SKU (Auto-Generated)</label>
                                 <input
                                     type="text"
                                     name="ProductSKU"
                                     value={formData.ProductSKU}
-                                    onChange={handleInputChange}
-                                    style={styles.input}
-                                    required
+                                    readOnly
+                                    style={{ ...styles.input, backgroundColor: '#f3f4f6' }}
                                 />
                             </div>
                             <div style={styles.formGroup}>
@@ -231,6 +369,38 @@ const AddProductModal = () => {
                                     style={styles.input}
                                     required
                                 />
+                            </div>
+                        </div>
+
+                        <div style={styles.formRow}>
+                            <div style={styles.formGroup}>
+                                <label style={styles.label}>Size</label>
+                                <input
+                                    type="text"
+                                    name="ProductSize"
+                                    value={formData.ProductSize}
+                                    onChange={handleInputChange}
+                                    style={styles.input}
+                                    placeholder="e.g. 50"
+                                />
+                            </div>
+                            <div style={styles.formGroup}>
+                                <label style={styles.label}>Unit</label>
+                                <select
+                                    name="ProductUnit"
+                                    value={formData.ProductUnit}
+                                    onChange={handleInputChange}
+                                    style={styles.select}
+                                >
+                                    <option value="">Select Unit</option>
+                                    <option value="kg">kg (Kilogram)</option>
+                                    <option value="g">g (Gram)</option>
+                                    <option value="l">l (Liter)</option>
+                                    <option value="ml">ml (Milliliter)</option>
+                                    <option value="m">m (Meter)</option>
+                                    <option value="cm">cm (Centimeter)</option>
+                                    <option value="mm">mm (Millimeter)</option>
+                                </select>
                             </div>
                         </div>
 
@@ -258,15 +428,7 @@ const AddProductModal = () => {
                             </div>
                         </div>
 
-                        <div style={styles.formGroup}>
-                            <label style={styles.label}>Description</label>
-                            <textarea
-                                name="ProductDescription"
-                                value={formData.ProductDescription}
-                                onChange={handleInputChange}
-                                style={{ ...styles.input, height: '60px', resize: 'vertical' }}
-                            />
-                        </div>
+
 
                         <div style={styles.formGroup}>
                             <label style={styles.fileInputLabel}>
@@ -292,8 +454,8 @@ const AddProductModal = () => {
                             <button type="button" style={styles.cancelButton} onClick={() => { dispatch(closeAddProductModal()); dispatch(setCurrentProductId(null)); }}>Cancel</button>
                         </div>
                     </form>
-                </div>
-            </div>
+                </div >
+            </div >
             <ConfirmationModal
                 isOpen={isDeleteModalOpen}
                 title="Delete Product"

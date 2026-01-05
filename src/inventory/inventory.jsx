@@ -272,7 +272,7 @@ const Inventory = () => {
                                         </div>
                                     </td>
                                     <td style={styles.td}>{item.ProductSKU}</td>
-                                    <td style={styles.td}>{item.ProductPrice}</td>
+                                    <td style={styles.td}>${(Number(item.ProductPrice) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
                                     <td style={styles.td}>
                                         <span style={styles.categoryBadge}>{item.ProductCategory}</span>
                                     </td>
@@ -289,14 +289,14 @@ const Inventory = () => {
                                     <td style={styles.td}>
                                         {item.ProductQuantity < 10 && <WarningAmberIcon style={styles.warningIcon} />}
                                     </td>
-                                    <td style={styles.td}>{item.ProductQuantity} units</td>
+                                    <td style={styles.td}>{(Number(item.ProductQuantity) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')} units</td>
                                     <td style={styles.td}>
                                         <button style={styles.addStockButton} onClick={() => handleOpenRestock(item)}>Add Stock</button>
                                     </td>
                                     <td style={styles.td}>
                                         <button style={styles.utilizeStockButton} onClick={() => handleOpenUtilize(item)}>Utilize Stock</button>
                                     </td>
-                                    <td style={styles.td}>{item.ProductQuantityUsed || 0}</td>
+                                    <td style={styles.td}>{(Number(item.ProductQuantityUsed) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
                                     <td style={styles.td}>
                                         <MoreHorizIcon style={{ ...styles.actionIcon, cursor: 'pointer' }} onClick={() => handleEdit(item._id)} />
                                     </td>

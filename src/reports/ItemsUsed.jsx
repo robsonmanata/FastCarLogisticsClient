@@ -57,8 +57,8 @@ const ItemsUsed = () => {
                                             <td style={styles.td}>{item.ProductName}</td>
                                             <td style={styles.td}>{item.ProductSKU}</td>
                                             <td style={styles.td}>{item.ProductCategory}</td>
-                                            <td style={styles.td}>{item.ProductQuantityUsed}</td>
-                                            <td style={styles.td}>{item.ProductQuantity}</td>
+                                            <td style={styles.td}>{(Number(item.ProductQuantityUsed) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
+                                            <td style={styles.td}>{(Number(item.ProductQuantity) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
                                         </tr>
                                     ))
                                 ) : (
