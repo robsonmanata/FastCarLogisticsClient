@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder, updateOrder, deleteOrder } from '../actions/orders';
+import { openAddProductModal } from '../actions/ui';
 import { getProducts } from '../actions/products';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
     const dispatch = useDispatch();
-    const products = useSelector((state) => state.products);
-    const orderToEdit = useSelector((state) => currentId && Array.isArray(state.orders) ? state.orders.find((o) => o._id === currentId) : null);
+    const { items: products } = useSelector((state) => state.products);
+    const orderToEdit = useSelector((state) => {
+        // Handle both old array state and new object state for robustness
+        const ordersList = state.orders.items || (Array.isArray(state.orders) ? state.orders : []);
+        return currentId ? ordersList.find((o) => o._id === currentId) : null;
+    });
 
     useEffect(() => {
-        dispatch(getProducts());
+        dispatch(getProducts('all'));
     }, [dispatch]);
 
     useEffect(() => {
@@ -39,7 +44,14 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
     };
 
     const handleItemChange = (e) => {
-        setCurrentItem({ ...currentItem, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        if (name === 'productId' && value === 'new_product') {
+            dispatch(openAddProductModal());
+            // Reset selection so the "Add New Product" option isn't stuck as selected
+            setCurrentItem({ ...currentItem, productId: '' });
+        } else {
+            setCurrentItem({ ...currentItem, [name]: value });
+        }
     };
 
     const addItem = () => {
@@ -48,6 +60,7 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
             const newItem = {
                 productId: product._id,
                 ProductName: product.ProductName,
+                ProductImage: product.ProductImage,
                 Quantity: Number(currentItem.Quantity),
                 Price: product.ProductPrice
             };
@@ -249,6 +262,7 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
                                 style={{ ...styles.select, flex: 2 }}
                             >
                                 <option value="">Select Product</option>
+                                <option value="new_product" style={{ fontWeight: 'bold', color: '#2563eb' }}>+ Add New Product</option>
                                 {Array.isArray(products) && [...products].filter(p => p && p.ProductName).sort((a, b) => a.ProductName.localeCompare(b.ProductName)).map(p => (
                                     <option key={p._id} value={p._id}>{p.ProductName}</option>
                                 ))}

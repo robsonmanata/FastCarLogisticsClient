@@ -14,6 +14,9 @@ import Settings from './settings/settings';
 
 import Transactions from './transactions/transactions';
 import Notifications from './notifications/notifications';
+import ItemsUsed from './reports/ItemsUsed';
+import ItemsOrdered from './reports/ItemsOrdered';
+import Finances from './finances/Finances';
 
 import './App.css';
 
@@ -64,6 +67,9 @@ function App() {
 
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/notifications" element={<Notifications />} />
+        <Route path="/items-used" element={<ItemsUsed />} />
+        <Route path="/items-ordered" element={<ItemsOrdered />} />
+        <Route path="/finances" element={<Finances />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

@@ -101,6 +101,10 @@ const Inventory = () => {
         if (location.state?.category) {
             setFilterCategory(location.state.category);
         }
+        if (location.state?.filterType === 'lowStock') {
+            // Assuming < 10 is the low stock threshold
+            setFilterQuantity({ min: '', max: '9' });
+        }
     }, [location.state]);
 
     const filteredPosts = posts.filter((item) => {

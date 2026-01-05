@@ -27,7 +27,7 @@ const options = {
         },
         title: {
             display: true,
-            text: 'Items Order vs Items Used',
+            text: 'Items Ordered vs Items Used',
         },
     },
 };

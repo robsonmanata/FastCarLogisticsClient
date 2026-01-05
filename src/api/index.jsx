@@ -32,6 +32,9 @@ export const createOrder = (newOrder) => API.post('/orders', newOrder);
 export const updateOrder = (id, updatedOrder) => API.patch(`/orders/${id}`, updatedOrder);
 export const deleteOrder = (id) => API.delete(`/orders/${id}`);
 
+export const fetchDashboardStats = () => API.get('/dashboard');
+export const fetchFinanceStats = () => API.get('/finances/stats');
+
 export const fetchTransactions = (page) => API.get(`/transactions?page=${page}`);
 
 export const fetchNotifications = (page) => API.get(`/notifications?page=${page}`);

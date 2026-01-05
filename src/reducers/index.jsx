@@ -10,5 +10,7 @@ import auth from './auth';
 import ui from './ui';
 import orders from './orders';
 import notifications from './notifications';
+import dashboard from './dashboard';
+import finances from './finances';
 
-export default combineReducers({ products, categories, transactions, user, ui, auth, orders, notifications });
+export default combineReducers({ products, categories, transactions, user, ui, auth, orders, notifications, dashboard, finances });
