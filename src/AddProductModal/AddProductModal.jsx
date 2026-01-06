@@ -334,7 +334,7 @@ const AddProductModal = () => {
                                 </select>
                             </div>
                             <div style={{ ...styles.formGroup, flex: 1 }}>
-                                <label style={styles.label}>Code</label>
+                                <label style={styles.label}>Code (Auto-Generated)</label>
                                 <input
                                     type="text"
                                     name="ProductPartCode"
