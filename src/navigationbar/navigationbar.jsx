@@ -61,8 +61,8 @@ const NavigationBar = () => {
                     <AddIcon />
                     Add product
                 </button>
-                <button onClick={() => { dispatch({ type: 'LOGOUT' }); window.location.href = '/'; }} style={{ ...styles.menuItem, background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', fontSize: 'inherit', fontFamily: 'inherit' }}>
-                    <LogoutIcon style={{ marginRight: '1rem' }} />
+                <button onClick={() => { dispatch({ type: 'LOGOUT' }); window.location.href = '/FastCarLogisticsClient/'; }} style={{ ...styles.menuItem, background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', fontSize: 'inherit', fontFamily: 'inherit' }}>
+                    <LogoutIcon style={{ marginRight: '1rem' }} />/
                     Log out
                 </button>
             </div>
