@@ -54,10 +54,10 @@ function App() {
   }, [dispatch]);
 
   return (
-    <BrowserRouter basename="/">
+    <BrowserRouter basename="/FastCarLogisticsClient">
       <AddProductModal />
       <Routes>
-        <Route path="/FastCarLogistics" element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/orders" element={<Orders />} />
@@ -70,7 +70,7 @@ function App() {
         <Route path="/items-used" element={<ItemsUsed />} />
         <Route path="/items-ordered" element={<ItemsOrdered />} />
         <Route path="/finances" element={<Finances />} />
-        <Route path="/" element={<Navigate to="/FastCarLogistics" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
       </Routes>
     </BrowserRouter>
   );
