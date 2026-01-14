@@ -15,10 +15,10 @@ const AddProductModal = () => {
     const dispatch = useDispatch();
     const isPopupOpen = useSelector((state) => state.ui.isAddProductModalOpen);
     const currentProductId = useSelector((state) => state.ui.currentProductId);
-    const productToEdit = useSelector((state) => currentProductId ? state.products.find((p) => p._id === currentProductId) : null);
+    const productToEdit = useSelector((state) => currentProductId ? state.products.items.find((p) => p._id === currentProductId) : null);
     const categories = useSelector((state) => state.categories);
     const user = JSON.parse(localStorage.getItem('profile'));
-    const userName = user?.result?.name || user?.result?.givenName + ' ' + user?.result?.familyName || 'Unknown User';
+    const userName = user?.result?.name ? `${user.result.name} ${user.result.surname || ''}`.trim() : user?.result?.givenName ? `${user.result.givenName} ${user.result.familyName}` : 'Unknown User';
 
     const [formData, setFormData] = useState({
         ProductName: '',
@@ -46,7 +46,27 @@ const AddProductModal = () => {
 
     React.useEffect(() => {
         if (productToEdit) {
-            setFormData(productToEdit);
+            // Ensure we merge with default keys so new fields aren't undefined for legacy products
+            setFormData({
+                ProductName: productToEdit.ProductName || '',
+                ProductDescription: productToEdit.ProductDescription || '',
+                ProductPrice: productToEdit.ProductPrice || '',
+                ProductCategory: productToEdit.ProductCategory || '',
+                ProductSKU: productToEdit.ProductSKU || '',
+                ProductBarcode: productToEdit.ProductBarcode || '',
+                ProductQuantity: productToEdit.ProductQuantity || '',
+                ProductStatus: productToEdit.ProductStatus || 'Active',
+                ProductSupplier: productToEdit.ProductSupplier || '',
+                ProductLocation: productToEdit.ProductLocation || '',
+                ProductQuantityUsed: productToEdit.ProductQuantityUsed || 0,
+                ProductImage: productToEdit.ProductImage || '',
+                ProductSize: productToEdit.ProductSize || '',
+                ProductUnit: productToEdit.ProductUnit || '',
+                ProductSubCategory: productToEdit.ProductSubCategory || '',
+                ProductVehicleType: productToEdit.ProductVehicleType || '',
+                ProductPartCode: productToEdit.ProductPartCode || '',
+                ProductRevision: productToEdit.ProductRevision || ''
+            });
         } else {
             setFormData({
                 ProductName: '',
@@ -169,8 +189,11 @@ const AddProductModal = () => {
         console.log('Current Product ID:', currentProductId);
         console.log('Form Data:', formData);
 
-        if (isAddingNewCategory && newCategoryName) {
-            await dispatch(createCategory({ CategoryName: newCategoryName, CategoryDescription: '' }));
+        // Check if the used category exists in the database labels, if not, create it.
+        // This covers both "Add new category" input AND hardcoded options that might not be in DB yet.
+        const categoryExists = categories.some(cat => cat.CategoryName === formData.ProductCategory);
+        if (formData.ProductCategory && !categoryExists && formData.ProductCategory !== 'add_new_category') {
+            await dispatch(createCategory({ CategoryName: formData.ProductCategory, CategoryDescription: '' }));
         }
 
         if (currentProductId) {
@@ -356,7 +379,7 @@ const AddProductModal = () => {
                                     name="ProductSKU"
                                     value={formData.ProductSKU}
                                     readOnly
-                                    style={{ ...styles.input, backgroundColor: '#f3f4f6' }}
+                                    style={{ ...styles.input, backgroundColor: '#f3f4f6', color: '#000000' }}
                                 />
                             </div>
                             <div style={styles.formGroup}>

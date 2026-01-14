@@ -7,7 +7,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CategoryIcon from '@mui/icons-material/Category';
-import StoreIcon from '@mui/icons-material/Store';
+import GroupIcon from '@mui/icons-material/Group';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
@@ -23,17 +23,26 @@ const NavigationBar = () => {
     const dispatch = useDispatch();
     const isActive = (path) => location.pathname === path;
 
+    const user = JSON.parse(localStorage.getItem('profile'));
+    const role = user?.result?.role || 'User'; // Default to User if unknown
+
     const menuItems = [
         { label: 'Dashboard', path: '/dashboard', icon: <HomeIcon /> },
         { label: 'Inventory', path: '/inventory', icon: <InventoryIcon /> },
         { label: 'Orders', path: '/orders', icon: <InventoryIcon /> },
-
         { label: 'Categories', path: '/categories', icon: <CategoryIcon /> },
-
-        { label: 'Transactions', path: '/transactions', icon: <ReceiptLongIcon /> },
-        { label: 'Finances', path: '/finances', icon: <MonetizationOnIcon /> },
-        { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
     ];
+
+    if (role === 'Admin') {
+        menuItems.push(
+            { label: 'Transactions', path: '/transactions', icon: <ReceiptLongIcon /> },
+            { label: 'Finances', path: '/finances', icon: <MonetizationOnIcon /> },
+            { label: 'Users', path: '/users', icon: <GroupIcon /> }
+        );
+    }
+
+    // Settings is visible to everyone (Personal Settings)
+    menuItems.push({ label: 'Settings', path: '/settings', icon: <SettingsIcon /> });
 
     return (
         <div style={styles.sidebar} className="sidebar">
@@ -62,7 +71,7 @@ const NavigationBar = () => {
                     Add product
                 </button>
                 <button onClick={() => { dispatch({ type: 'LOGOUT' }); window.location.href = '/FastCarLogisticsClient/'; }} style={{ ...styles.menuItem, background: 'none', border: 'none', cursor: 'pointer', width: '100%', textAlign: 'left', fontSize: 'inherit', fontFamily: 'inherit' }}>
-                    <LogoutIcon style={{ marginRight: '1rem' }} />/
+                    <LogoutIcon style={{ marginRight: '1rem' }} />
                     Log out
                 </button>
             </div>

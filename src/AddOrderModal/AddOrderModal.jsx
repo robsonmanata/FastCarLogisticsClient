@@ -121,19 +121,19 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
         modal: {
             backgroundColor: 'white',
             borderRadius: '12px',
-            padding: '2rem',
+            padding: '1.5rem', // Reduced padding
             width: '500px',
-            maxHeight: '90vh',
-            overflowY: 'auto',
+            maxHeight: '90vh', // KEPT as requested
+            overflowY: 'auto', // KEPT as requested
         },
         header: {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '1.5rem',
+            marginBottom: '1rem', // Reduced
         },
         title: {
-            fontSize: '1.5rem',
+            fontSize: '1.25rem', // Slightly smaller
             fontWeight: 'bold',
             color: '#1f2937',
         },
@@ -144,65 +144,71 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
             color: '#6b7280',
         },
         formGroup: {
-            marginBottom: '1rem',
+            marginBottom: '0.75rem', // Reduced
         },
         label: {
             display: 'block',
-            marginBottom: '0.5rem',
+            marginBottom: '0.25rem', // Reduced
             fontWeight: '500',
             color: '#374151',
+            fontSize: '0.875rem' // Smaller text
         },
         input: {
             width: '100%',
-            padding: '0.5rem',
+            padding: '0.4rem', // Reduced
             borderRadius: '6px',
             border: '1px solid #d1d5db',
             color: '#1f2937',
             backgroundColor: 'white',
+            fontSize: '0.875rem'
         },
         select: {
             width: '100%',
-            padding: '0.5rem',
+            padding: '0.4rem', // Reduced
             borderRadius: '6px',
             border: '1px solid #d1d5db',
             color: '#1f2937',
             backgroundColor: 'white',
+            fontSize: '0.875rem'
         },
         addItemGroup: {
             display: 'flex',
             gap: '0.5rem',
             alignItems: 'flex-end',
-            marginBottom: '1rem',
+            marginBottom: '0.75rem', // Reduced
         },
         addButton: {
-            padding: '0.5rem 1rem',
+            padding: '0.4rem 0.75rem', // Reduced
             backgroundColor: '#1f2937',
             color: 'white',
             border: 'none',
             borderRadius: '6px',
             cursor: 'pointer',
+            fontSize: '0.875rem'
         },
         itemsList: {
-            marginBottom: '1rem',
+            marginBottom: '0.75rem',
             border: '1px solid #e5e7eb',
             borderRadius: '6px',
             padding: '0.5rem',
             color: '#1f2937',
+            fontSize: '0.875rem'
         },
         submitButton: {
             width: '100%',
-            padding: '0.75rem',
+            padding: '0.6rem', // Reduced
             backgroundColor: isLoading ? '#9ca3af' : '#1f2937',
             color: 'white',
             border: 'none',
             borderRadius: '6px',
             fontWeight: 'bold',
             cursor: isLoading ? 'not-allowed' : 'pointer',
-            marginTop: '1rem',
+            marginTop: '0.5rem',
+            fontSize: '0.875rem'
         },
         deleteButton: {
             width: '100%',
-            padding: '0.75rem',
+            padding: '0.6rem', // Reduced
             backgroundColor: '#ef4444',
             color: 'white',
             border: 'none',
@@ -210,6 +216,7 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
             fontWeight: 'bold',
             cursor: 'pointer',
             marginTop: '0.5rem',
+            fontSize: '0.875rem'
         },
         removeIcon: {
             cursor: 'pointer',
@@ -228,28 +235,30 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
                     </button>
                 </div>
                 <form onSubmit={handleSubmit}>
-                    <div style={styles.formGroup}>
-                        <label style={styles.label}>Order Number</label>
-                        <input
-                            type="text"
-                            name="OrderNumber"
-                            value={formData.OrderNumber}
-                            onChange={handleChange}
-                            style={styles.input}
-                            required
-                        />
-                    </div>
-                    <div style={styles.formGroup}>
-                        <label style={styles.label}>Accepted by</label>
-                        <input
-                            type="text"
-                            name="BilledTo"
-                            value={formData.BilledTo}
-                            onChange={handleChange}
-                            style={{ ...styles.input, backgroundColor: '#f3f4f6', cursor: 'not-allowed' }}
-                            readOnly
-                            required
-                        />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                        <div style={styles.formGroup}>
+                            <label style={styles.label}>Order Number</label>
+                            <input
+                                type="text"
+                                name="OrderNumber"
+                                value={formData.OrderNumber}
+                                onChange={handleChange}
+                                style={styles.input}
+                                required
+                            />
+                        </div>
+                        <div style={styles.formGroup}>
+                            <label style={styles.label}>Accepted by</label>
+                            <input
+                                type="text"
+                                name="BilledTo"
+                                value={formData.BilledTo}
+                                onChange={handleChange}
+                                style={{ ...styles.input, backgroundColor: '#f3f4f6', cursor: 'not-allowed' }}
+                                readOnly
+                                required
+                            />
+                        </div>
                     </div>
 
                     <div style={styles.formGroup}>

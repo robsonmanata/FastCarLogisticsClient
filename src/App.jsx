@@ -14,6 +14,7 @@ import Settings from './settings/settings';
 
 import Transactions from './transactions/transactions';
 import Notifications from './notifications/notifications';
+import Users from './users/Users';
 import ItemsUsed from './reports/ItemsUsed';
 import ItemsOrdered from './reports/ItemsOrdered';
 import Finances from './finances/Finances';
@@ -64,6 +65,7 @@ function App() {
 
         <Route path="/categories" element={<Categories />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/users" element={<Users />} />
 
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/notifications" element={<Notifications />} />
