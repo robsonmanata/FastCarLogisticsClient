@@ -10,6 +10,17 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
+API.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (error.response && error.response.status === 401) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+);
+
 export const getProducts = (page) => API.get(`/products?page=${page}`);
 export const createProduct = (newProduct) => API.post('/products', newProduct);
 export const updateProduct = (id, updatedProduct) => API.patch(`/products/${id}`, updatedProduct);

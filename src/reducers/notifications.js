@@ -6,7 +6,8 @@ export default (state = { items: [], meta: {} }, action) => {
                 meta: {
                     currentPage: action.payload.currentPage,
                     numberOfPages: action.payload.numberOfPages,
-                    totalCount: action.payload.totalCount
+                    totalCount: action.payload.totalCount,
+                    unreadCount: action.payload.unreadCount
                 }
             };
         case 'MARK_AS_READ':

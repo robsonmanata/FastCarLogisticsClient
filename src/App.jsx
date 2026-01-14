@@ -43,12 +43,17 @@ function App() {
     dispatch(getProducts());
     dispatch(getCategories());
 
-    // Initial fetch
-    dispatch(getNotifications(1));
+    // Initial fetch only if logged in
+    if (user?.result) {
+      dispatch(getNotifications(1));
+    }
 
     // Poll for notifications every 10 seconds
     const intervalId = setInterval(() => {
-      dispatch(getNotifications(1));
+      const currentUser = JSON.parse(localStorage.getItem('profile'));
+      if (currentUser?.result) {
+        dispatch(getNotifications(1));
+      }
     }, 10000);
 
     return () => clearInterval(intervalId);
