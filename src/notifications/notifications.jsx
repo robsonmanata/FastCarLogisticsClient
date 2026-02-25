@@ -46,13 +46,15 @@ const Notifications = () => {
                             notifications.map((notification) => {
                                 const userId = user?.result?._id || user?.result?.googleId;
                                 const isRead = notification.readBy?.some(r => r.userId === userId);
+                                const isRestocked = notification.type === 'Restocked';
 
                                 return (
                                     <div
                                         key={notification._id}
                                         style={{
                                             ...styles.notificationItem,
-                                            backgroundColor: isRead ? 'white' : '#fef2f2',
+                                            backgroundColor: isRestocked ? '#dcfce7' : (isRead ? 'white' : '#fef2f2'),
+                                            borderLeft: isRestocked ? '4px solid #22c55e' : (isRead ? '4px solid transparent' : '4px solid #ef4444')
                                         }}
                                         onClick={() => handleNotificationClick(notification._id, notification.readBy || [])}
                                     >

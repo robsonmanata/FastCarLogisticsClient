@@ -5,6 +5,7 @@ import { createProduct, updateProduct, deleteProduct } from '../actions/products
 import { createCategory } from '../actions/categories';
 import { closeAddProductModal, setCurrentProductId } from '../actions/ui';
 import { AddProductModalStyles } from './AddProductModalStyle';
+import { checkProductExists } from '../api/index';
 
 import imageCompression from 'browser-image-compression';
 
@@ -91,25 +92,74 @@ const AddProductModal = () => {
         }
     }, [productToEdit]);
 
+    const [duplicateProduct, setDuplicateProduct] = useState(false);
+    const [revisionNotice, setRevisionNotice] = useState('');
+
     // Auto-generate SKU
     React.useEffect(() => {
         const { ProductVehicleType, ProductCategory, ProductSubCategory, ProductPartCode, ProductSize, ProductUnit } = formData;
         if (ProductVehicleType && ProductCategory && ProductSubCategory && ProductPartCode) {
-            // Size is optional for the SKU structure but requested in example 320MM
-            // If size and unit exist, combine them (e.g., 320MM). If only Size (e.g. M12), use Size.
             let sizePart = '';
             if (ProductSize) {
                 sizePart = `-${ProductSize}` + (ProductUnit ? ProductUnit.toUpperCase() : '');
             }
 
-            // Mapping Category Names to Codes if needed, OR assuming values are already Codes.
-            // User requested specific codes: MEC, ELE, etc.
-            // We will update the Category Dropdown to use these codes as values.
+            const baseSku = `${ProductVehicleType}-${ProductCategory}-${ProductSubCategory}-${ProductPartCode}${sizePart}`.toUpperCase();
 
-            const sku = `${ProductVehicleType}-${ProductCategory}-${ProductSubCategory}-${ProductPartCode}${sizePart}`;
-            setFormData(prev => ({ ...prev, ProductSKU: sku.toUpperCase() }));
+            // Set base SKU initially
+            setFormData(prev => ({ ...prev, ProductSKU: baseSku, ProductRevision: '' }));
+
+            // Check for duplicate via API
+            if (formData.ProductName && baseSku && !currentProductId) {
+                const checkDuplicate = async () => {
+                    try {
+                        const { data } = await checkProductExists(baseSku, formData.ProductName);
+
+                        if (data.exists) {
+                            if (data.isExactMatch) {
+                                // Exact Match: Same SKU & Same Name -> Merge Qty
+                                setDuplicateProduct(true);
+                                setRevisionNotice('');
+                            } else {
+                                // Partial Match: Same Base SKU but Different Name -> New Revision
+                                setDuplicateProduct(false); // It's not a duplicate, it's a new item with a revision
+                                const newRevisionNum = (data.highestRevision || 0) + 1;
+                                const revisionString = `R${newRevisionNum}`;
+
+                                setFormData(prev => ({
+                                    ...prev,
+                                    ProductSKU: `${baseSku}-${revisionString}`,
+                                    ProductRevision: revisionString
+                                }));
+                                setRevisionNotice(`Base SKU exists for a different product. Automatically assigned revision ${revisionString}.`);
+                            }
+                        } else {
+                            // No Match -> Clean Base SKU
+                            setDuplicateProduct(false);
+                            setRevisionNotice('');
+                        }
+                    } catch (error) {
+                        console.error('Error checking duplicate:', error);
+                        setDuplicateProduct(false);
+                        setRevisionNotice('');
+                    }
+                };
+
+                // Debounce the API call slightly to prevent too many requests while typing/selecting
+                const timeoutId = setTimeout(() => {
+                    checkDuplicate();
+                }, 500);
+
+                return () => clearTimeout(timeoutId);
+            } else {
+                setDuplicateProduct(false);
+                setRevisionNotice('');
+            }
+        } else {
+            setDuplicateProduct(false);
+            setRevisionNotice('');
         }
-    }, [formData.ProductVehicleType, formData.ProductCategory, formData.ProductSubCategory, formData.ProductPartCode, formData.ProductSize, formData.ProductUnit]);
+    }, [formData.ProductVehicleType, formData.ProductCategory, formData.ProductSubCategory, formData.ProductPartCode, formData.ProductSize, formData.ProductUnit, formData.ProductName, currentProductId]);
 
     const generatePartCode = (name) => {
         if (!name) return '';
@@ -372,7 +422,7 @@ const AddProductModal = () => {
                         </div>
 
                         <div style={styles.formRow}>
-                            <div style={styles.formGroup}>
+                            <div style={{ ...styles.formGroup, flex: 2 }}>
                                 <label style={styles.label}>SKU (Auto-Generated)</label>
                                 <input
                                     type="text"
@@ -381,8 +431,23 @@ const AddProductModal = () => {
                                     readOnly
                                     style={{ ...styles.input, backgroundColor: '#f3f4f6', color: '#000000' }}
                                 />
+                                {revisionNotice && (
+                                    <p style={{ fontSize: '0.8rem', color: '#059669', marginTop: '0.25rem', fontWeight: '500' }}>
+                                        {revisionNotice}
+                                    </p>
+                                )}
                             </div>
-                            <div style={styles.formGroup}>
+                            <div style={{ ...styles.formGroup, flex: 1 }}>
+                                <label style={styles.label}>Revision</label>
+                                <input
+                                    type="text"
+                                    name="ProductRevision"
+                                    value={formData.ProductRevision || '-'}
+                                    readOnly
+                                    style={{ ...styles.input, backgroundColor: '#f3f4f6', color: '#6b7280', textAlign: 'center' }}
+                                />
+                            </div>
+                            <div style={{ ...styles.formGroup, flex: 1 }}>
                                 <label style={styles.label}>Price</label>
                                 <input
                                     type="number"
@@ -440,13 +505,16 @@ const AddProductModal = () => {
                                 />
                             </div>
                             <div style={styles.formGroup}>
-                                <label style={styles.label}>Barcode</label>
+                                <label style={{ ...styles.label, color: '#0e0e0eff', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                                    External Barcode (Scan Here)
+                                </label>
                                 <input
                                     type="text"
                                     name="ProductBarcode"
                                     value={formData.ProductBarcode}
                                     onChange={handleInputChange}
-                                    style={styles.input}
+                                    style={styles.barcodeInput}
+                                    placeholder="Click and scan..."
                                 />
                             </div>
                         </div>
@@ -454,15 +522,21 @@ const AddProductModal = () => {
 
 
                         <div style={styles.formGroup}>
-                            <label style={styles.fileInputLabel}>
-                                {formData.ProductImage ? 'Image Uploaded' : 'Upload Product Image'}
+                            <label style={{ ...styles.fileInputLabel, cursor: duplicateProduct ? 'not-allowed' : 'pointer', opacity: duplicateProduct ? 0.6 : 1 }}>
+                                {duplicateProduct ? 'Existing Product (Image Upload Disabled)' : (formData.ProductImage ? 'Image Uploaded' : 'Upload Product Image')}
                                 <input
                                     type="file"
                                     accept="image/*"
                                     onChange={handleFileChange}
                                     style={styles.fileInput}
+                                    disabled={duplicateProduct}
                                 />
                             </label>
+                            {duplicateProduct && (
+                                <p style={{ color: '#059669', fontSize: '0.875rem', marginTop: '0.5rem', fontWeight: '500' }}>
+                                    ✓ Product exists. Submitting will add quantity to existing stock.
+                                </p>
+                            )}
                         </div>
 
                         <div style={styles.buttonGroup}>

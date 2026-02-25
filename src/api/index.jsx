@@ -22,6 +22,7 @@ API.interceptors.response.use(
 );
 
 export const getProducts = (page) => API.get(`/products?page=${page}`);
+export const checkProductExists = (sku, name) => API.get(`/products/check?sku=${encodeURIComponent(sku)}&name=${encodeURIComponent(name)}`);
 export const createProduct = (newProduct) => API.post('/products', newProduct);
 export const updateProduct = (id, updatedProduct) => API.patch(`/products/${id}`, updatedProduct);
 export const deleteProduct = (id) => API.delete(`/products/${id}`);

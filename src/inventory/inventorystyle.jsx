@@ -88,6 +88,7 @@ export class InventoryStyles {
         color: '#1f2937',
         borderBottom: '1px solid #f3f4f6',
         verticalAlign: 'middle',
+        fontWeight: '600'
     };
     partCell = {
         display: 'flex',

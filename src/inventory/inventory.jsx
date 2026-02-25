@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { InventoryStyles } from './inventorystyle';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
+import BarcodeGenerator from '../components/BarcodeGenerator/BarcodeGenerator';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
@@ -110,7 +111,8 @@ const Inventory = () => {
     const filteredPosts = posts.filter((item) => {
         const matchesSearch = (item.ProductName && item.ProductName.toLowerCase().includes(searchQuery.toLowerCase())) ||
             (item.ProductSKU && item.ProductSKU.toLowerCase().includes(searchQuery.toLowerCase())) ||
-            (item.ProductCategory && item.ProductCategory.toLowerCase().includes(searchQuery.toLowerCase()));
+            (item.ProductCategory && item.ProductCategory.toLowerCase().includes(searchQuery.toLowerCase())) ||
+            (item.ProductBarcode && item.ProductBarcode.toLowerCase().includes(searchQuery.toLowerCase()));
 
         const matchesCategory = filterCategory ? item.ProductCategory === filterCategory : true;
 
@@ -271,20 +273,13 @@ const Inventory = () => {
                                             {item.ProductName}
                                         </div>
                                     </td>
-                                    <td style={styles.td}>{item.ProductSKU}</td>
+                                    <td style={{ ...styles.td, fontSize: '0.5rem' }}>{item.ProductSKU}</td>
                                     <td style={styles.td}>${(Number(item.ProductPrice) || 0).toLocaleString('en-US').replace(/,/g, '\u00A0')}</td>
                                     <td style={styles.td}>
                                         <span style={styles.categoryBadge}>{item.ProductCategory}</span>
                                     </td>
-                                    <td style={styles.td}>
-                                        <div style={styles.barcodeContainer}>
-                                            {/* Simple CSS barcode representation */}
-                                            <div style={styles.barcodeBars}>
-                                                {[...Array(10)].map((_, i) => (
-                                                    <div key={i} style={Math.random() > 0.5 ? styles.barcodeLineThick : styles.barcodeLineThin}></div>
-                                                ))}
-                                            </div>
-                                        </div>
+                                    <td style={{ ...styles.td, padding: '5px' }}>
+                                        <BarcodeGenerator sku={item.ProductSKU} barcodeText={item.ProductBarcode} />
                                     </td>
                                     <td style={styles.td}>
                                         {item.ProductQuantity < 10 && <WarningAmberIcon style={styles.warningIcon} />}

@@ -11,21 +11,21 @@ export class AddProductModalStyles {
         justifyContent: 'flex-end',
     };
     popup = {
-        width: '500px',
+        width: '650px', // Increased width for better fitting
         backgroundColor: 'white',
-        maxHeight: '90vh', // Prevent it from exceeding viewport height
-        padding: '1.5rem',
-        borderRadius: '12px', // Smoother corners
+        maxHeight: '95vh', // Allow slight more height
+        padding: '1rem', // Reduced padding
+        borderRadius: '8px', // slightly tighter corners
         boxShadow: '-4px 0 15px rgba(0, 0, 0, 0.1)',
         display: 'flex',
         flexDirection: 'column',
-        overflowY: 'auto', // Enable scrolling if content is too long
+        overflowY: 'auto',
     };
     popupHeader = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '1rem',
+        marginBottom: '0.5rem', // Reduced margin
     };
     popupTitle = {
         fontSize: '1.25rem',
@@ -42,11 +42,11 @@ export class AddProductModalStyles {
     form = {
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.5rem', // Reduced gap for compactness
+        gap: '0.4rem', // Reduced overall form gap
     };
     formRow = {
         display: 'flex',
-        gap: '1rem',
+        gap: '0.5rem', // Tighter rows
     };
     formGroup = {
         display: 'flex',
@@ -55,35 +55,45 @@ export class AddProductModalStyles {
         flex: 1,
     };
     label = {
-        fontSize: '0.85rem',
+        fontSize: '0.75rem', // Slightly smaller
         fontWeight: '600',
         color: '#374151',
     };
     input = {
-        padding: '0.5rem',
-        borderRadius: '6px',
+        padding: '0.35rem 0.5rem', // Thinner inputs
+        borderRadius: '4px',
         border: '1px solid #d1d5db',
-        fontSize: '0.9rem',
+        fontSize: '0.85rem',
         outline: 'none',
     };
-    select = {
-        padding: '0.5rem',
-        borderRadius: '6px',
-        border: '1px solid #d1d5db',
+    barcodeInput = {
+        padding: '0.35rem 0.5rem',
+        borderRadius: '4px',
+        border: '2px dashed #374151', // Distinct green dashed border
+        backgroundColor: '#374151', // Light green background
         fontSize: '0.9rem',
+        fontWeight: 'bold',
+        outline: 'none',
+        color: '#ffffff', // Changed to white
+    };
+    select = {
+        padding: '0.35rem 0.5rem', // Thinner selects
+        borderRadius: '4px',
+        border: '1px solid #d1d5db',
+        fontSize: '0.85rem',
         outline: 'none',
         backgroundColor: 'white',
         color: '#1f2937',
     };
     buttonGroup = {
         display: 'flex',
-        gap: '1rem',
-        marginTop: '1rem',
+        gap: '0.5rem',
+        marginTop: '0.5rem', // Tighter spacing
     };
     submitButton = {
         flex: 1,
-        padding: '0.6rem',
-        borderRadius: '6px',
+        padding: '0.5rem', // Thinner buttons
+        borderRadius: '4px',
         border: 'none',
         backgroundColor: '#374151',
         color: 'white',
@@ -92,8 +102,8 @@ export class AddProductModalStyles {
     };
     cancelButton = {
         flex: 1,
-        padding: '0.6rem',
-        borderRadius: '6px',
+        padding: '0.5rem',
+        borderRadius: '4px',
         border: '1px solid #d1d5db',
         backgroundColor: 'white',
         color: '#374151',
@@ -102,8 +112,8 @@ export class AddProductModalStyles {
     };
     deleteButton = {
         flex: 1,
-        padding: '0.6rem',
-        borderRadius: '6px',
+        padding: '0.5rem',
+        borderRadius: '4px',
         border: 'none',
         backgroundColor: '#ef4444',
         color: 'white',
@@ -111,19 +121,19 @@ export class AddProductModalStyles {
         cursor: 'pointer',
     };
     fileInputLabel = {
-        padding: '0.6rem',
+        padding: '0.5rem', // Thinner label
         backgroundColor: '#374151',
         color: 'white',
-        borderRadius: '6px',
+        borderRadius: '4px',
         border: 'none',
         textAlign: 'center',
         cursor: 'pointer',
         display: 'block',
         width: '100%',
         boxSizing: 'border-box',
-        fontSize: '0.9rem',
+        fontSize: '0.85rem',
         fontWeight: '600',
-        marginTop: '0.5rem',
+        marginTop: '0.25rem', // Tighter margin
     };
     fileInput = {
         display: 'none',
