@@ -11,6 +11,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import * as api from '../api/index';
 import { openAddProductModal } from '../actions/ui';
 import { getNotifications } from '../actions/notifications';
+import { getConversations } from '../actions/messages';
 import Badge from '@mui/material/Badge';
 
 const TopBar = () => {
@@ -20,6 +21,7 @@ const TopBar = () => {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.authData);
     const { items: notifications, meta } = useSelector((state) => state.notifications);
+    const { totalUnread: unreadMessagesCount } = useSelector((state) => state.messages) || { totalUnread: 0 };
     const unreadCount = meta?.unreadCount || 0;
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -38,6 +40,7 @@ const TopBar = () => {
 
     useEffect(() => {
         dispatch(getNotifications(1));
+        dispatch(getConversations());
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
                 setShowResults(false);
@@ -117,14 +120,18 @@ const TopBar = () => {
             </div>
 
             <div style={styles.actions}>
-                <AppsIcon style={styles.icon} titleAccess="Menu" />
-                <ChatBubbleOutlineIcon style={styles.icon} titleAccess="Chat" />
+                <AppsIcon style={{ ...styles.icon, cursor: 'pointer' }} titleAccess="Menu" onClick={() => navigate('/menu')} />
+                <div style={{ cursor: 'pointer' }} onClick={() => navigate('/chat')}>
+                    <Badge badgeContent={unreadMessagesCount} color="error">
+                        <ChatBubbleOutlineIcon style={styles.icon} titleAccess="Chat" />
+                    </Badge>
+                </div>
                 <div style={{ cursor: 'pointer' }} onClick={() => navigate('/notifications')}>
                     <Badge badgeContent={unreadCount} color="error">
                         <NotificationsNoneIcon style={styles.icon} titleAccess="Notifications" />
                     </Badge>
                 </div>
-                <div style={styles.avatar}>
+                <div style={{ ...styles.avatar, cursor: 'pointer' }} onClick={() => navigate('/settings')}>
                     {user?.result?.profilePicture ? (
                         <img src={user.result.profilePicture} alt={user.result.name} style={styles.avatarImage} />
                     ) : (

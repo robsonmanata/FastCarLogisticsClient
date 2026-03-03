@@ -1,7 +1,6 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { CategoriesStyles } from './categoriesstyle';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
@@ -19,6 +18,7 @@ const Categories = () => {
     const styles = new CategoriesStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const categories = useSelector((state) => state.categories);
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -28,6 +28,13 @@ const Categories = () => {
         CategoryDescription: ''
     });
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+    useEffect(() => {
+        if (location.state?.openAddModal) {
+            setIsPopupOpen(true);
+            window.history.replaceState({}, document.title);
+        }
+    }, [location.state]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;

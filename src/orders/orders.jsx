@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { OrdersStyles } from './ordersstyle';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
@@ -16,6 +17,7 @@ import Pagination from '../components/Pagination/Pagination';
 const Orders = () => {
     const styles = new OrdersStyles();
     const dispatch = useDispatch();
+    const location = useLocation();
     const { items: orders, meta } = useSelector((state) => state.orders);
     const [expandedRow, setExpandedRow] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -33,7 +35,12 @@ const Orders = () => {
 
     useEffect(() => {
         dispatch(getOrders(1));
-    }, [dispatch]);
+        if (location.state?.openAddModal) {
+            setIsAddModalOpen(true);
+            // Optional: clear state so it doesn't reopen if they refresh
+            window.history.replaceState({}, document.title)
+        }
+    }, [dispatch, location.state]);
 
     console.log('Orders state:', orders);
 

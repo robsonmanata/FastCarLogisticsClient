@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createOrder, updateOrder, deleteOrder } from '../actions/orders';
-import { openAddProductModal } from '../actions/ui';
+import { openAddProductModal, setScannedBarcode } from '../actions/ui';
 import { getProducts } from '../actions/products';
+import { checkProductByBarcode } from '../api/index';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -38,6 +39,49 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
         productId: '',
         Quantity: 1
     });
+
+    const [scanInput, setScanInput] = useState('');
+
+    useEffect(() => {
+        if (scanInput && scanInput.trim() !== '') {
+            const checkScan = async () => {
+                try {
+                    const { data } = await checkProductByBarcode(scanInput.trim());
+                    if (data.exists && data.product) {
+                        // Product exists, add it directly to standard order list
+                        const product = data.product;
+                        const newItem = {
+                            productId: product._id,
+                            ProductName: product.ProductName,
+                            ProductImage: product.ProductImage,
+                            Quantity: 1, // Default add 1
+                            Price: product.ProductPrice
+                        };
+
+                        setFormData(prev => ({
+                            ...prev,
+                            Items: [...(prev.Items || []), newItem]
+                        }));
+
+                        setScanInput(''); // Clear input for next scan
+                    } else {
+                        // Product not found, redirect to Add Product
+                        dispatch(setScannedBarcode(scanInput.trim()));
+                        dispatch(openAddProductModal());
+                        setScanInput(''); // Clear input for next scan
+                    }
+                } catch (error) {
+                    console.error('Error checking barcode during order:', error);
+                }
+            };
+
+            const timeoutId = setTimeout(() => {
+                checkScan();
+            }, 300); // 300ms is enough for most scanners
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [scanInput, dispatch]);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -262,7 +306,32 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
                     </div>
 
                     <div style={styles.formGroup}>
-                        <label style={styles.label}>Add Items</label>
+                        <label style={styles.label}>Add Items (Scan or Select)</label>
+
+                        {/* Barcode Scanner Input */}
+                        <div style={{ marginBottom: '0.75rem' }}>
+                            <input
+                                type="text"
+                                placeholder="Scan Barcode Here to Add Item..."
+                                value={scanInput}
+                                onChange={(e) => setScanInput(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault(); // Prevent standard form submission
+                                    }
+                                }}
+                                style={{
+                                    ...styles.input,
+                                    border: '2px solid #1d1d1d',
+                                    backgroundColor: '#1d1d1d',
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                    textAlign: 'center'
+                                }}
+                                autoFocus
+                            />
+                        </div>
+
                         <div style={styles.addItemGroup}>
                             <select
                                 name="productId"
@@ -270,7 +339,7 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
                                 onChange={handleItemChange}
                                 style={{ ...styles.select, flex: 2 }}
                             >
-                                <option value="">Select Product</option>
+                                <option value="">Select Product Manually</option>
                                 <option value="new_product" style={{ fontWeight: 'bold', color: '#2563eb' }}>+ Add New Product</option>
                                 {Array.isArray(products) && [...products].filter(p => p && p.ProductName).sort((a, b) => a.ProductName.localeCompare(b.ProductName)).map(p => (
                                     <option key={p._id} value={p._id}>{p.ProductName}</option>

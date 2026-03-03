@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import CloseIcon from '@mui/icons-material/Close';
 import { createProduct, updateProduct, deleteProduct } from '../actions/products';
 import { createCategory } from '../actions/categories';
 import { closeAddProductModal, setCurrentProductId } from '../actions/ui';
 import { AddProductModalStyles } from './AddProductModalStyle';
-import { checkProductExists } from '../api/index';
+import { checkProductExists, checkProductByBarcode } from '../api/index';
 
 import imageCompression from 'browser-image-compression';
 
@@ -16,6 +16,7 @@ const AddProductModal = () => {
     const dispatch = useDispatch();
     const isPopupOpen = useSelector((state) => state.ui.isAddProductModalOpen);
     const currentProductId = useSelector((state) => state.ui.currentProductId);
+    const scannedBarcode = useSelector((state) => state.ui.scannedBarcode);
     const productToEdit = useSelector((state) => currentProductId ? state.products.items.find((p) => p._id === currentProductId) : null);
     const categories = useSelector((state) => state.categories);
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -75,7 +76,7 @@ const AddProductModal = () => {
                 ProductPrice: '',
                 ProductCategory: '',
                 ProductSKU: '',
-                ProductBarcode: '',
+                ProductBarcode: scannedBarcode || '',
                 ProductQuantity: '',
                 ProductStatus: 'Active',
                 ProductSupplier: '',
@@ -90,7 +91,7 @@ const AddProductModal = () => {
                 ProductRevision: ''
             });
         }
-    }, [productToEdit]);
+    }, [productToEdit, scannedBarcode]);
 
     const [duplicateProduct, setDuplicateProduct] = useState(false);
     const [revisionNotice, setRevisionNotice] = useState('');
@@ -160,6 +161,53 @@ const AddProductModal = () => {
             setRevisionNotice('');
         }
     }, [formData.ProductVehicleType, formData.ProductCategory, formData.ProductSubCategory, formData.ProductPartCode, formData.ProductSize, formData.ProductUnit, formData.ProductName, currentProductId]);
+
+    // Handle barcode scanning to auto-populate
+    useEffect(() => {
+        if (!currentProductId && formData.ProductBarcode && formData.ProductBarcode.trim() !== '') {
+            const checkBarcode = async () => {
+                try {
+                    const { data } = await checkProductByBarcode(formData.ProductBarcode);
+                    if (data.exists && data.product) {
+                        const productToFill = data.product;
+                        setFormData({
+                            ProductName: productToFill.ProductName || '',
+                            ProductDescription: productToFill.ProductDescription || '',
+                            ProductPrice: productToFill.ProductPrice || '',
+                            ProductCategory: productToFill.ProductCategory || '',
+                            ProductSKU: productToFill.ProductSKU || '',
+                            ProductBarcode: productToFill.ProductBarcode || '',
+                            // Leave quantity open for user to enter how many they are scanning/adding
+                            ProductQuantity: '',
+                            ProductStatus: productToFill.ProductStatus || 'Active',
+                            ProductSupplier: productToFill.ProductSupplier || '',
+                            ProductLocation: productToFill.ProductLocation || '',
+                            ProductQuantityUsed: productToFill.ProductQuantityUsed || 0,
+                            ProductImage: productToFill.ProductImage || '',
+                            ProductSize: productToFill.ProductSize || '',
+                            ProductUnit: productToFill.ProductUnit || '',
+                            ProductSubCategory: productToFill.ProductSubCategory || '',
+                            ProductVehicleType: productToFill.ProductVehicleType || '',
+                            ProductPartCode: productToFill.ProductPartCode || '',
+                            ProductRevision: productToFill.ProductRevision || ''
+                        });
+                        // Automatically flag it as a duplicate so the submission handles it as adding to stock
+                        setDuplicateProduct(true);
+                        setRevisionNotice('Product found via barcode. Submitting will add quantity to existing stock.');
+                    }
+                } catch (error) {
+                    console.error('Error checking barcode:', error);
+                }
+            };
+
+            // Debounce the barcode scan slightly
+            const timeoutId = setTimeout(() => {
+                checkBarcode();
+            }, 500);
+
+            return () => clearTimeout(timeoutId);
+        }
+    }, [formData.ProductBarcode, currentProductId]);
 
     const generatePartCode = (name) => {
         if (!name) return '';
@@ -502,6 +550,7 @@ const AddProductModal = () => {
                                     onChange={handleInputChange}
                                     style={styles.input}
                                     required
+                                    min="0"
                                 />
                             </div>
                             <div style={styles.formGroup}>

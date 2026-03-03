@@ -46,9 +46,14 @@ const Inventory = () => {
     const handleSubmitRestock = (e) => {
         e.preventDefault();
         if (restockItem && restockAmount) {
+            const amount = Number(restockAmount);
+            if (amount <= 0) {
+                alert("Amount must be a positive number.");
+                return;
+            }
             const user = JSON.parse(localStorage.getItem('profile'));
             const userName = user?.result?.name || user?.result?.givenName + ' ' + user?.result?.familyName || 'Unknown User';
-            const updatedProduct = { ...restockItem, ProductQuantity: Number(restockItem.ProductQuantity) + Number(restockAmount), User: userName };
+            const updatedProduct = { ...restockItem, ProductQuantity: Number(restockItem.ProductQuantity) + amount, User: userName };
             dispatch(updateProduct(restockItem._id, updatedProduct));
             setRestockItem(null);
             setRestockAmount('');
@@ -68,6 +73,11 @@ const Inventory = () => {
         if (utilizeItem && utilizeAmount) {
             const currentQty = Number(utilizeItem.ProductQuantity);
             const usedAmount = Number(utilizeAmount);
+
+            if (usedAmount <= 0) {
+                alert("Amount must be a positive number.");
+                return;
+            }
 
             if (usedAmount > currentQty) {
                 alert("Cannot utilize more than available stock!");
@@ -279,7 +289,7 @@ const Inventory = () => {
                                         <span style={styles.categoryBadge}>{item.ProductCategory}</span>
                                     </td>
                                     <td style={{ ...styles.td, padding: '5px' }}>
-                                        <BarcodeGenerator sku={item.ProductSKU} barcodeText={item.ProductBarcode} />
+                                        <BarcodeGenerator sku={item.ProductSKU} barcodeText={item.ProductBarcode} product={item} />
                                     </td>
                                     <td style={styles.td}>
                                         {item.ProductQuantity < 10 && <WarningAmberIcon style={styles.warningIcon} />}

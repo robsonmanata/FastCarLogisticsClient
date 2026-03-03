@@ -12,5 +12,6 @@ import orders from './orders';
 import notifications from './notifications';
 import dashboard from './dashboard';
 import finances from './finances';
+import messages from './messages';
 
-export default combineReducers({ products, categories, transactions, user, ui, auth, orders, notifications, dashboard, finances });
+export default combineReducers({ products, categories, transactions, user, ui, auth, orders, notifications, dashboard, finances, messages });

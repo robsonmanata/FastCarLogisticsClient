@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import bwipjs from 'bwip-js';
 
-const BarcodeGenerator = ({ sku, barcodeText }) => {
+const BarcodeGenerator = ({ sku, barcodeText, product }) => {
     const canvasRef = useRef(null);
     const expandedCanvasRef = useRef(null);
     const [error, setError] = useState(false);
@@ -15,7 +15,7 @@ const BarcodeGenerator = ({ sku, barcodeText }) => {
             if (canvasRef.current) {
                 bwipjs.toCanvas(canvasRef.current, {
                     bcid: 'code128',
-                    text: sku,
+                    text: barcodeText || sku,
                     scale: 2, // Generate high-resolution
                     height: 10,
                     includetext: true,
@@ -29,7 +29,7 @@ const BarcodeGenerator = ({ sku, barcodeText }) => {
             if (isExpanded && expandedCanvasRef.current) {
                 bwipjs.toCanvas(expandedCanvasRef.current, {
                     bcid: 'code128',
-                    text: sku,
+                    text: barcodeText || sku,
                     scale: 3, // Large for easy scanning
                     height: 15,
                     includetext: true,
@@ -85,12 +85,26 @@ const BarcodeGenerator = ({ sku, barcodeText }) => {
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            gap: '1rem'
+                            gap: '1.5rem',
+                            minWidth: '400px'
                         }}
                         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the white modal itself
                     >
-                        <h3 style={{ margin: 0, color: '#374151' }}>Scan Barcode</h3>
-                        <canvas ref={expandedCanvasRef} />
+                        {product ? (
+                            <div style={{ textAlign: 'center', width: '100%' }}>
+                                <h2 style={{ margin: '0 0 0.5rem 0', color: '#1f2937' }}>{product.ProductName}</h2>
+                                <p style={{ margin: '0 0 0.25rem 0', color: '#4b5563', fontSize: '0.9rem' }}><strong>SKU:</strong> {product.ProductSKU}</p>
+                                <p style={{ margin: '0 0 0.25rem 0', color: '#4b5563', fontSize: '0.9rem' }}><strong>Category:</strong> {product.ProductCategory}</p>
+                                {product.ProductPrice && <p style={{ margin: '0', color: '#4b5563', fontSize: '0.9rem' }}><strong>Price:</strong> ${(Number(product.ProductPrice) || 0).toLocaleString('en-US')}</p>}
+                                <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb', margin: '1rem 0' }} />
+                            </div>
+                        ) : (
+                            <h3 style={{ margin: 0, color: '#374151' }}>Scan Barcode</h3>
+                        )}
+
+                        <div style={{ padding: '1rem', backgroundColor: '#f9fafb', borderRadius: '8px', display: 'flex', justifyContent: 'center', width: '100%' }}>
+                            <canvas ref={expandedCanvasRef} />
+                        </div>
                         <button
                             style={{
                                 marginTop: '1rem',

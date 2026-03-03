@@ -23,6 +23,7 @@ API.interceptors.response.use(
 
 export const getProducts = (page) => API.get(`/products?page=${page}`);
 export const checkProductExists = (sku, name) => API.get(`/products/check?sku=${encodeURIComponent(sku)}&name=${encodeURIComponent(name)}`);
+export const checkProductByBarcode = (barcode) => API.get(`/products/barcode?barcode=${encodeURIComponent(barcode)}`);
 export const createProduct = (newProduct) => API.post('/products', newProduct);
 export const updateProduct = (id, updatedProduct) => API.patch(`/products/${id}`, updatedProduct);
 export const deleteProduct = (id) => API.delete(`/products/${id}`);
@@ -52,8 +53,10 @@ export const fetchTransactions = (page) => API.get(`/transactions?page=${page}`)
 export const fetchNotifications = (page) => API.get(`/notifications?page=${page}`);
 export const markNotificationAsRead = (id, data) => API.patch(`/notifications/${id}/read`, data);
 
-
-
+export const fetchConversations = () => API.get('/messages/conversations');
+export const fetchMessages = (userId) => API.get(`/messages/${userId}`);
+export const sendMessage = (messageData) => API.post('/messages', messageData);
+export const markMessagesAsRead = (userId) => API.put(`/messages/${userId}/read`);
 
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);

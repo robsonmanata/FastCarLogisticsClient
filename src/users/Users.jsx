@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { UsersStyles } from './UsersStyles';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
@@ -13,6 +14,7 @@ import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal
 const Users = () => {
     const styles = new UsersStyles();
     const dispatch = useDispatch();
+    const location = useLocation();
     const users = useSelector((state) => state.user); // Assumed to be an array from reducer
 
     // Modal State
@@ -31,10 +33,6 @@ const Users = () => {
         profilePicture: ''
     });
 
-    useEffect(() => {
-        dispatch(getUsers());
-    }, [dispatch]);
-
     const handleOpenAdd = () => {
         setModalType('add');
         setFormData({
@@ -48,6 +46,16 @@ const Users = () => {
         });
         setIsModalOpen(true);
     };
+
+    useEffect(() => {
+        dispatch(getUsers());
+        if (location.state?.openAddModal) {
+            handleOpenAdd();
+            window.history.replaceState({}, document.title);
+        }
+    }, [dispatch, location.state]);
+
+
 
     const handleOpenEdit = (user) => {
         setModalType('edit');
