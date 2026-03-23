@@ -12,7 +12,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import parts from '../assets/parts.png';
 import { createCategory, updateCategory, deleteCategory } from '../actions/categories';
 
-import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
+import ConfirmationModal from '../components/ConfirmationModal/confirmationmodal';
 
 const Categories = () => {
     const styles = new CategoriesStyles();

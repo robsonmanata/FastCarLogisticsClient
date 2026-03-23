@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ItemsUsedStyles } from './ItemsUsedStyles';
+import { ItemsUsedStyles } from './ItemsUsedstyle';
 import NavigationBar from '../navigationbar/navigationbar';
 import { getProducts } from '../actions/products';
 import TopBar from '../topBar/topbar';
-import Pagination from '../components/Pagination/Pagination';
+import Pagination from '../components/Pagination/pagination';
 
 const ItemsUsed = () => {
     const dispatch = useDispatch();

@@ -4,12 +4,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import { createProduct, updateProduct, deleteProduct } from '../actions/products';
 import { createCategory } from '../actions/categories';
 import { closeAddProductModal, setCurrentProductId } from '../actions/ui';
-import { AddProductModalStyles } from './AddProductModalStyle';
+import { AddProductModalStyles } from './addproductmodalstyle';
 import { checkProductExists, checkProductByBarcode } from '../api/index';
 
 import imageCompression from 'browser-image-compression';
 
-import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
+import ConfirmationModal from '../components/ConfirmationModal/confirmationmodal';
 
 const AddProductModal = () => {
     const styles = new AddProductModalStyles();

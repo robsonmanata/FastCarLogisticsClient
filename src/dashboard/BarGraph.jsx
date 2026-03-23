@@ -9,6 +9,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { BarGraphStyles } from './bargraphstyle';
 
 ChartJS.register(
     CategoryScale,
@@ -80,8 +81,10 @@ const BarGraph = ({ data }) => {
         ],
     };
 
+    const styles = new BarGraphStyles();
+
     return (
-        <div style={{ backgroundColor: 'white', padding: '1.5rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)', marginTop: '2rem' }}>
+        <div style={styles.container}>
             <Bar options={chartOptions} data={finalData} />
         </div>
     );

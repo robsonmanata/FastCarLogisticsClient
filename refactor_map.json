@@ -1,0 +1,242 @@
+[
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\dashboard.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\dashboard.jsx",
+    "oldRel": "/actions/dashboard.js",
+    "newRel": "/actions/dashboard.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\finances.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\finances.jsx",
+    "oldRel": "/actions/finances.js",
+    "newRel": "/actions/finances.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\messages.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\messages.jsx",
+    "oldRel": "/actions/messages.js",
+    "newRel": "/actions/messages.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\notifications.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\notifications.jsx",
+    "oldRel": "/actions/notifications.js",
+    "newRel": "/actions/notifications.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\orders.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\orders.jsx",
+    "oldRel": "/actions/orders.js",
+    "newRel": "/actions/orders.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\transactions.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\actions\\transactions.jsx",
+    "oldRel": "/actions/transactions.js",
+    "newRel": "/actions/transactions.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\AddOrderModal",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\addordermodal",
+    "oldRel": "/AddOrderModal",
+    "newRel": "/addordermodal"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\AddOrderModal\\AddOrderModal.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\addordermodal\\addordermodal.jsx",
+    "oldRel": "/AddOrderModal/AddOrderModal.jsx",
+    "newRel": "/addordermodal/addordermodal.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\AddOrderModal\\AddOrderModalStyle.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\addordermodal\\addordermodalstyle.jsx",
+    "oldRel": "/AddOrderModal/AddOrderModalStyle.jsx",
+    "newRel": "/addordermodal/addordermodalstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\AddProductModal",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\addproductmodal",
+    "oldRel": "/AddProductModal",
+    "newRel": "/addproductmodal"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\AddProductModal\\AddProductModal.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\addproductmodal\\addproductmodal.jsx",
+    "oldRel": "/AddProductModal/AddProductModal.jsx",
+    "newRel": "/addproductmodal/addproductmodal.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\AddProductModal\\AddProductModalStyle.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\addproductmodal\\addproductmodalstyle.jsx",
+    "oldRel": "/AddProductModal/AddProductModalStyle.jsx",
+    "newRel": "/addproductmodal/addproductmodalstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\chat\\Chat.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\chat\\chat.jsx",
+    "oldRel": "/chat/Chat.jsx",
+    "newRel": "/chat/chat.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\chat\\chatStyles.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\chat\\chatstyle.jsx",
+    "oldRel": "/chat/chatStyles.js",
+    "newRel": "/chat/chatstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\BarcodeGenerator",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\barcodegenerator",
+    "oldRel": "/components/BarcodeGenerator",
+    "newRel": "/components/barcodegenerator"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\BarcodeGenerator\\BarcodeGenerator.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\barcodegenerator\\barcodegenerator.jsx",
+    "oldRel": "/components/BarcodeGenerator/BarcodeGenerator.jsx",
+    "newRel": "/components/barcodegenerator/barcodegenerator.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\ConfirmationModal",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\confirmationmodal",
+    "oldRel": "/components/ConfirmationModal",
+    "newRel": "/components/confirmationmodal"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\ConfirmationModal\\ConfirmationModal.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\confirmationmodal\\confirmationmodal.jsx",
+    "oldRel": "/components/ConfirmationModal/ConfirmationModal.jsx",
+    "newRel": "/components/confirmationmodal/confirmationmodal.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\ConfirmationModal\\ConfirmationModalStyle.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\confirmationmodal\\confirmationmodalstyle.jsx",
+    "oldRel": "/components/ConfirmationModal/ConfirmationModalStyle.jsx",
+    "newRel": "/components/confirmationmodal/confirmationmodalstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\Pagination",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\pagination",
+    "oldRel": "/components/Pagination",
+    "newRel": "/components/pagination"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\Pagination\\Pagination.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\components\\pagination\\pagination.jsx",
+    "oldRel": "/components/Pagination/Pagination.jsx",
+    "newRel": "/components/pagination/pagination.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\dashboard\\dashboardstyles.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\dashboard\\dashboardstyle.jsx",
+    "oldRel": "/dashboard/dashboardstyles.jsx",
+    "newRel": "/dashboard/dashboardstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\finances\\Finances.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\finances\\finances.jsx",
+    "oldRel": "/finances/Finances.jsx",
+    "newRel": "/finances/finances.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\finances\\FinancesStyles.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\finances\\financesstyle.jsx",
+    "oldRel": "/finances/FinancesStyles.jsx",
+    "newRel": "/finances/financesstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\menu\\Menu.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\menu\\menu.jsx",
+    "oldRel": "/menu/Menu.jsx",
+    "newRel": "/menu/menu.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\menu\\MenuStyle.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\menu\\menustyle.jsx",
+    "oldRel": "/menu/MenuStyle.jsx",
+    "newRel": "/menu/menustyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\navigationbar\\navigationbarStyle.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\navigationbar\\navigationbarstyle.jsx",
+    "oldRel": "/navigationbar/navigationbarStyle.jsx",
+    "newRel": "/navigationbar/navigationbarstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\dashboard.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\dashboard.jsx",
+    "oldRel": "/reducers/dashboard.js",
+    "newRel": "/reducers/dashboard.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\finances.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\finances.jsx",
+    "oldRel": "/reducers/finances.js",
+    "newRel": "/reducers/finances.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\messages.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\messages.jsx",
+    "oldRel": "/reducers/messages.js",
+    "newRel": "/reducers/messages.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\notifications.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\notifications.jsx",
+    "oldRel": "/reducers/notifications.js",
+    "newRel": "/reducers/notifications.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\orders.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\orders.jsx",
+    "oldRel": "/reducers/orders.js",
+    "newRel": "/reducers/orders.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\transactions.js",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reducers\\transactions.jsx",
+    "oldRel": "/reducers/transactions.js",
+    "newRel": "/reducers/transactions.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reports\\ItemsOrderedStyles.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reports\\reportsstyle.jsx",
+    "oldRel": "/reports/ItemsOrderedStyles.jsx",
+    "newRel": "/reports/reportsstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reports\\ItemsUsedStyles.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\reports\\reportsstyle.jsx",
+    "oldRel": "/reports/ItemsUsedStyles.jsx",
+    "newRel": "/reports/reportsstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\topBar",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\topbar",
+    "oldRel": "/topBar",
+    "newRel": "/topbar"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\topBar\\topbar.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\topbar\\topbar.jsx",
+    "oldRel": "/topBar/topbar.jsx",
+    "newRel": "/topbar/topbar.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\topBar\\topbarstyles.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\topbar\\topbarstyle.jsx",
+    "oldRel": "/topBar/topbarstyles.jsx",
+    "newRel": "/topbar/topbarstyle.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\users\\Users.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\users\\users.jsx",
+    "oldRel": "/users/Users.jsx",
+    "newRel": "/users/users.jsx"
+  },
+  {
+    "oldPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\users\\UsersStyles.jsx",
+    "newPath": "C:\\Users\\robso\\ReactApps\\FastCarLogisticsAntigravity\\client\\src\\users\\usersstyle.jsx",
+    "oldRel": "/users/UsersStyles.jsx",
+    "newRel": "/users/usersstyle.jsx"
+  }
+]

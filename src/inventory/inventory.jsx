@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { InventoryStyles } from './inventorystyle';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
-import BarcodeGenerator from '../components/BarcodeGenerator/BarcodeGenerator';
+import BarcodeGenerator from '../components/BarcodeGenerator/barcodegenerator';
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,7 +12,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import { openAddProductModal, setCurrentProductId } from '../actions/ui';
 import { updateProduct, getProducts } from '../actions/products';
-import Pagination from '../components/Pagination/Pagination';
+import Pagination from '../components/Pagination/pagination';
 
 const Inventory = () => {
     const styles = new InventoryStyles();
@@ -115,6 +115,9 @@ const Inventory = () => {
         if (location.state?.filterType === 'lowStock') {
             // Assuming < 10 is the low stock threshold
             setFilterQuantity({ min: '', max: '9' });
+        }
+        if (location.state?.searchQuery) {
+            setSearchQuery(location.state.searchQuery);
         }
     }, [location.state]);
 

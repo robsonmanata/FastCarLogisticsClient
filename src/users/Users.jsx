@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { UsersStyles } from './UsersStyles';
+import { UsersStyles } from './Usersstyle';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,7 +9,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import EditIcon from '@mui/icons-material/Edit';
 import { getUsers, signup, updateUser, deleteUser } from '../actions/user';
 import imageCompression from 'browser-image-compression';
-import ConfirmationModal from '../components/ConfirmationModal/ConfirmationModal';
+import ConfirmationModal from '../components/ConfirmationModal/confirmationmodal';
 
 const Users = () => {
     const styles = new UsersStyles();

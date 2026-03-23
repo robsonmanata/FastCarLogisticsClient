@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TransactionsStyles } from './transactionsstyle';
 
-import Pagination from '../components/Pagination/Pagination';
+import Pagination from '../components/Pagination/pagination';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
 import { getTransactions } from '../actions/transactions';

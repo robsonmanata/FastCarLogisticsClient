@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationStyles } from './navigationbarStyle';
+import { NavigationStyles } from './navigationbarstyle';
 import { Link, useLocation } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import AddIcon from '@mui/icons-material/Add';

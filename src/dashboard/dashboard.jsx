@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { DashboardStyles } from './dashboardstyles';
+import { DashboardStyles } from './dashboardstyle';
 import NavigationBar from '../navigationbar/navigationbar';
 import Categories from '../assets/OpHguMVjWq1lxU274SeW.webp';
 import TopBar from '../topBar/topbar';
-import BarGraph from './BarGraph';
+import BarGraph from './bargraph';
 import { getDashboardStats } from '../actions/dashboard';
 
 const Dashboard = () => {

@@ -9,22 +9,22 @@ import { getConversations } from './actions/messages';
 import Login from './login/login';
 import Dashboard from './dashboard/dashboard';
 import Inventory from './inventory/inventory';
-import Menu from './menu/Menu';
+import Menu from './menu/menu';
 import Orders from './orders/orders';
 import Categories from './categories/categories';
 import Settings from './settings/settings';
 
 import Transactions from './transactions/transactions';
 import Notifications from './notifications/notifications';
-import Users from './users/Users';
-import ItemsUsed from './reports/ItemsUsed';
-import ItemsOrdered from './reports/ItemsOrdered';
-import Finances from './finances/Finances';
-import Chat from './chat/Chat';
+import Users from './users/users';
+import ItemsUsed from './reports/itemsused';
+import ItemsOrdered from './reports/itemsordered';
+import Finances from './finances/finances';
+import Chat from './chat/chat';
 
 import './App.css';
 
-import AddProductModal from './AddProductModal/AddProductModal';
+import AddProductModal from './addproductmodal/addproductmodal';
 
 import { jwtDecode } from 'jwt-decode';
 

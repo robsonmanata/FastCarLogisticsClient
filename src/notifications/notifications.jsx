@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getNotifications, markAsRead } from '../actions/notifications';
 import { NotificationStyles } from './notificationsstyle';
-import Pagination from '../components/Pagination/Pagination';
+import Pagination from '../components/Pagination/pagination';
 
 import moment from 'moment';
 import TopBar from '../topBar/topbar';

@@ -11,8 +11,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import SearchIcon from '@mui/icons-material/Search';
 import { getOrders } from '../actions/orders';
-import AddOrderModal from '../AddOrderModal/AddOrderModal';
-import Pagination from '../components/Pagination/Pagination';
+import AddOrderModal from '../addordermodal/addordermodal';
+import Pagination from '../components/Pagination/pagination';
 
 const Orders = () => {
     const styles = new OrdersStyles();

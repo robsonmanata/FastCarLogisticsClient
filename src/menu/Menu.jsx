@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { MenuStyles } from './MenuStyle';
+import { MenuStyles } from './Menustyle';
 
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
@@ -10,6 +10,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CategoryIcon from '@mui/icons-material/Category';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
 
 import { openAddProductModal, setScannedBarcode } from '../actions/ui';
 import TopBar from '../topBar/topbar';
@@ -21,22 +22,24 @@ const Menu = () => {
     const dispatch = useDispatch();
 
     const [hoveredBox, setHoveredBox] = useState(null);
-    const [isScanning, setIsScanning] = useState(false);
+    const [scanMode, setScanMode] = useState(null);
     const [scanBuffer, setScanBuffer] = useState('');
     const scanInputRef = useRef(null);
 
     // Keep focus on the hidden input when scanning
     useEffect(() => {
-        if (isScanning && scanInputRef.current) {
+        if (scanMode && scanInputRef.current) {
             scanInputRef.current.focus();
         }
-    }, [isScanning]);
+    }, [scanMode]);
 
     const handleBoxClick = (action) => {
         if (action === 'addProduct') {
             dispatch(openAddProductModal());
-        } else if (action === 'scan') {
-            setIsScanning(true);
+        } else if (action === 'scanAdd') {
+            setScanMode('add');
+        } else if (action === 'scanFind') {
+            setScanMode('find');
         } else if (action === 'addOrder') {
             navigate('/orders', { state: { openAddModal: true } });
         } else if (action === 'addCategory') {
@@ -52,20 +55,25 @@ const Menu = () => {
         e.preventDefault();
         if (scanBuffer.trim()) {
             const barcode = scanBuffer.trim();
-            setIsScanning(false);
+            const currentMode = scanMode;
+            setScanMode(null);
             setScanBuffer('');
 
-            // Dispatch the scanned barcode into Redux, which AddProductModal uses to auto-fill
-            dispatch(setScannedBarcode(barcode));
-            dispatch(openAddProductModal());
+            if (currentMode === 'add') {
+                dispatch(setScannedBarcode(barcode));
+                dispatch(openAddProductModal());
+            } else if (currentMode === 'find') {
+                navigate('/inventory', { state: { searchQuery: barcode } });
+            }
         }
     };
 
     const user = JSON.parse(localStorage.getItem('profile'));
 
     const boxes = [
-        { id: 'addProduct', label: 'Add Product', icon: <AddBoxIcon style={styles.icon} /> },
-        { id: 'scan', label: 'Scan (Add Product)', icon: <QrCodeScannerIcon style={styles.icon} /> },
+        { id: 'scanFind', label: 'Find Product (Scan)', icon: <DocumentScannerIcon style={styles.icon} /> },
+        { id: 'scanAdd', label: 'Add Product (Scan)', icon: <QrCodeScannerIcon style={styles.icon} /> },
+        { id: 'addProduct', label: 'Add Product (Manual)', icon: <AddBoxIcon style={styles.icon} /> },
         { id: 'addOrder', label: 'Add Order', icon: <AddShoppingCartIcon style={styles.icon} /> },
         { id: 'addCategory', label: 'Add Category', icon: <CategoryIcon style={styles.icon} /> },
         ...(user?.result?.role === 'Admin' ? [{ id: 'addEmployee', label: 'Add Employee', icon: <PersonAddIcon style={styles.icon} /> }] : []),
@@ -102,11 +110,17 @@ const Menu = () => {
             </div>
 
             {/* Scan Modal */}
-            {isScanning && (
-                <div style={styles.modalOverlay} onClick={() => setIsScanning(false)}>
+            {scanMode && (
+                <div style={styles.modalOverlay} onClick={() => setScanMode(null)}>
                     <div style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                        <QrCodeScannerIcon style={{ fontSize: '4rem', color: '#10b981' }} />
-                        <h2 style={{ margin: 0, color: '#1f2937' }}>Ready to Scan!</h2>
+                        {scanMode === 'add' ? (
+                            <QrCodeScannerIcon style={{ fontSize: '4rem', color: '#10b981' }} />
+                        ) : (
+                            <DocumentScannerIcon style={{ fontSize: '4rem', color: '#3b82f6' }} />
+                        )}
+                        <h2 style={{ margin: 0, color: '#1f2937' }}>
+                            {scanMode === 'add' ? 'Scan to Add Product' : 'Scan to Find Product'}
+                        </h2>
                         <p style={{ color: '#6b7280', margin: 0 }}>Please use your barcode scanner now.</p>
 
                         <form onSubmit={handleScanSubmit}>
@@ -118,7 +132,7 @@ const Menu = () => {
                                 onChange={(e) => setScanBuffer(e.target.value)}
                                 onBlur={() => {
                                     // re-focus immediately if they click away
-                                    if (isScanning && scanInputRef.current) {
+                                    if (scanMode && scanInputRef.current) {
                                         scanInputRef.current.focus();
                                     }
                                 }}
@@ -137,7 +151,7 @@ const Menu = () => {
                                 cursor: 'pointer',
                                 fontWeight: 'bold'
                             }}
-                            onClick={() => setIsScanning(false)}
+                            onClick={() => setScanMode(null)}
                         >
                             Cancel
                         </button>

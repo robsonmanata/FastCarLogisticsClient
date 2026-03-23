@@ -9,6 +9,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { FinanceBarGraphStyles } from './financebargraphstyle';
 
 ChartJS.register(
     CategoryScale,
@@ -49,8 +50,10 @@ const FinanceBarGraph = ({ data }) => {
         ],
     };
 
+    const styles = new FinanceBarGraphStyles();
+
     return (
-        <div style={{ width: '100%', height: '400px' }}>
+        <div style={styles.container}>
             <Bar options={options} data={chartData} />
         </div>
     );

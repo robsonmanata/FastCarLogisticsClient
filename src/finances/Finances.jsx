@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FinancesStyles } from './FinancesStyles';
+import { FinancesStyles } from './Financesstyle';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
-import FinanceBarGraph from './FinanceBarGraph';
+import FinanceBarGraph from './Financebargraph';
 import { getFinanceStats } from '../actions/finances';
-import Pagination from '../components/Pagination/Pagination';
+import Pagination from '../components/Pagination/pagination';
 
 const Finances = () => {
     const styles = new FinancesStyles();

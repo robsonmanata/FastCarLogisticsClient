@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import bwipjs from 'bwip-js';
+import { BarcodeGeneratorStyles } from './barcodegeneratorstyle';
 
 const BarcodeGenerator = ({ sku, barcodeText, product }) => {
+    const styles = new BarcodeGeneratorStyles();
     const canvasRef = useRef(null);
     const expandedCanvasRef = useRef(null);
     const [error, setError] = useState(false);
@@ -45,76 +47,46 @@ const BarcodeGenerator = ({ sku, barcodeText, product }) => {
     }, [sku, barcodeText, isExpanded]);
 
     if (error) {
-        return <div style={{ color: 'red', fontSize: '12px' }}>Invalid Barcode Data</div>;
+        return <div style={styles.errorText}>Invalid Barcode Data</div>;
     }
 
     return (
         <>
             <div
-                style={{ display: 'flex', justifyContent: 'center', width: '100%', cursor: 'pointer' }}
+                style={styles.inlineWrapper}
                 onClick={() => setIsExpanded(true)}
                 title="Click to enlarge for scanning"
             >
                 {/* Fixed height of 40px matches the old 20px bars + 20px text */}
-                <canvas ref={canvasRef} style={{ height: '40px', maxWidth: '100px', objectFit: 'contain' }} />
+                <canvas ref={canvasRef} style={styles.inlineCanvas} />
             </div>
 
             {isExpanded && (
                 <div
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        backgroundColor: 'rgba(0,0,0,0.7)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 9999,
-                        cursor: 'pointer'
-                    }}
+                    style={styles.modalOverlay}
                     onClick={() => setIsExpanded(false)}
                 >
                     <div
-                        style={{
-                            backgroundColor: 'white',
-                            padding: '2rem',
-                            borderRadius: '8px',
-                            boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            gap: '1.5rem',
-                            minWidth: '400px'
-                        }}
+                        style={styles.modalContent}
                         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the white modal itself
                     >
                         {product ? (
-                            <div style={{ textAlign: 'center', width: '100%' }}>
-                                <h2 style={{ margin: '0 0 0.5rem 0', color: '#1f2937' }}>{product.ProductName}</h2>
-                                <p style={{ margin: '0 0 0.25rem 0', color: '#4b5563', fontSize: '0.9rem' }}><strong>SKU:</strong> {product.ProductSKU}</p>
-                                <p style={{ margin: '0 0 0.25rem 0', color: '#4b5563', fontSize: '0.9rem' }}><strong>Category:</strong> {product.ProductCategory}</p>
-                                {product.ProductPrice && <p style={{ margin: '0', color: '#4b5563', fontSize: '0.9rem' }}><strong>Price:</strong> ${(Number(product.ProductPrice) || 0).toLocaleString('en-US')}</p>}
-                                <hr style={{ border: 'none', borderTop: '1px solid #e5e7eb', margin: '1rem 0' }} />
+                            <div style={styles.productDetails}>
+                                <h2 style={styles.productName}>{product.ProductName}</h2>
+                                <p style={styles.productInfo}><strong>SKU:</strong> {product.ProductSKU}</p>
+                                <p style={styles.productInfo}><strong>Category:</strong> {product.ProductCategory}</p>
+                                {product.ProductPrice && <p style={styles.priceText}><strong>Price:</strong> ${(Number(product.ProductPrice) || 0).toLocaleString('en-US')}</p>}
+                                <hr style={styles.divider} />
                             </div>
                         ) : (
-                            <h3 style={{ margin: 0, color: '#374151' }}>Scan Barcode</h3>
+                            <h3 style={styles.scanHeader}>Scan Barcode</h3>
                         )}
 
-                        <div style={{ padding: '1rem', backgroundColor: '#f9fafb', borderRadius: '8px', display: 'flex', justifyContent: 'center', width: '100%' }}>
+                        <div style={styles.canvasContainer}>
                             <canvas ref={expandedCanvasRef} />
                         </div>
                         <button
-                            style={{
-                                marginTop: '1rem',
-                                padding: '0.5rem 1.5rem',
-                                backgroundColor: '#374151',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '4px',
-                                cursor: 'pointer'
-                            }}
+                            style={styles.closeButton}
                             onClick={() => setIsExpanded(false)}
                         >
                             Close

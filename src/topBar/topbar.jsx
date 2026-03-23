@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { TopBarStyles } from './topbarstyles';
+import { TopBarStyles } from './topbarstyle';
 import logoImage from '../assets/fastcarlogo.webp';
 import AppsIcon from '@mui/icons-material/Apps';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
@@ -27,13 +27,21 @@ const TopBar = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [showResults, setShowResults] = useState(false);
     const searchRef = useRef(null);
+    const [isSearching, setIsSearching] = useState(false);
+
+    const role = user?.result?.role || 'User';
 
     const searchItems = [
         { label: 'Dashboard', path: '/dashboard', type: 'navigation' },
         { label: 'Inventory', path: '/inventory', type: 'navigation' },
+        { label: 'Orders', path: '/orders', type: 'navigation' },
         { label: 'Categories', path: '/categories', type: 'navigation' },
         { label: 'Warehouse', path: '/warehouse', type: 'navigation' },
-        { label: 'Finances', path: '/finances', type: 'navigation' },
+        ...(role === 'Admin' ? [
+            { label: 'Finances', path: '/finances', type: 'navigation' },
+            { label: 'Transactions', path: '/transactions', type: 'navigation' },
+            { label: 'Users', path: '/users', type: 'navigation' }
+        ] : []),
         { label: 'Settings', path: '/settings', type: 'navigation' },
         { label: 'Add Product', type: 'action', action: openAddProductModal },
     ];
@@ -53,7 +61,7 @@ const TopBar = () => {
         };
     }, [dispatch]);
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         const term = e.target.value;
         setSearchTerm(term);
 
@@ -61,11 +69,33 @@ const TopBar = () => {
             setSearchResults([]);
             setShowResults(false);
         } else {
-            const results = searchItems.filter(item =>
+            // Local fallback
+            const localResults = searchItems.filter(item =>
                 item.label.toLowerCase().includes(term.toLowerCase())
             );
-            setSearchResults(results);
+
+            setSearchResults(localResults);
             setShowResults(true);
+            setIsSearching(true);
+
+            try {
+                const { data } = await api.globalSearch(term);
+                if (data && Array.isArray(data)) {
+                    // map backend searches into local structure
+                    const remoteResults = data.map(res => {
+                        let path = '/dashboard';
+                        if (res.type === 'product') path = '/inventory';
+                        if (res.type === 'order') path = '/orders';
+                        if (res.type === 'user') path = '/users';
+                        return { label: res.label, path: path, type: 'navigation' };
+                    });
+                    setSearchResults([...localResults, ...remoteResults]);
+                }
+            } catch (error) {
+                console.log("Error searching: ", error);
+            } finally {
+                setIsSearching(false);
+            }
         }
     };
 

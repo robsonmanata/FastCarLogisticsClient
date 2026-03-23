@@ -8,6 +8,7 @@ export class ChatStyles {
     mainContent = {
         flex: 1,
         padding: '2rem',
+        boxSizing: 'border-box',
         marginLeft: '220px', // For NavigationBar offset
         display: 'flex',
         flexDirection: 'column',
@@ -115,7 +116,7 @@ export class ChatStyles {
     };
 
     unreadBadge = {
-        backgroundColor: '#10b981',
+        backgroundColor: '#244373',
         color: 'white',
         borderRadius: '12px',
         padding: '0.1rem 0.5rem',
@@ -160,7 +161,7 @@ export class ChatStyles {
     };
 
     messageSent = {
-        backgroundColor: '#10b981', // App theme green
+        backgroundColor: '#244373', // App theme color
         color: 'white',
         alignSelf: 'flex-end',
         borderBottomRightRadius: '2px',

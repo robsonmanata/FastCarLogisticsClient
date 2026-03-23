@@ -58,5 +58,6 @@ export const fetchMessages = (userId) => API.get(`/messages/${userId}`);
 export const sendMessage = (messageData) => API.post('/messages', messageData);
 export const markMessagesAsRead = (userId) => API.put(`/messages/${userId}/read`);
 
+export const globalSearch = (query) => API.get(`/search?q=${encodeURIComponent(query)}`);
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);

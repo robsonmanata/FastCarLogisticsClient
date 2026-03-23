@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ChatStyles } from './chatStyles';
+import { ChatStyles } from './chatstyle';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
 import SendIcon from '@mui/icons-material/Send';
@@ -30,12 +30,24 @@ const Chat = () => {
         dispatch(getUsers());
     }, [dispatch]);
 
-    // Load messages when a user is selected
+    // Load messages when a user is selected and poll for live updates
     useEffect(() => {
+        let interval;
         if (activeUser) {
+            // Initial fetch on select
             dispatch(getMessages(activeUser._id));
             dispatch(markMessagesAsRead(activeUser._id));
+
+            // Poll every 5 seconds to keep the active chat live
+            interval = setInterval(() => {
+                dispatch(getMessages(activeUser._id));
+                dispatch(markMessagesAsRead(activeUser._id));
+                dispatch(getConversations()); // Refresh sidebar snippet as well
+            }, 5000);
         }
+        return () => {
+            if (interval) clearInterval(interval);
+        };
     }, [activeUser, dispatch]);
 
     // Auto-scroll to bottom of chat
@@ -59,6 +71,15 @@ const Chat = () => {
 
     return (
         <div style={styles.container}>
+            <style>{`
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+                .hide-scrollbar {
+                    -ms-overflow-style: none; /* IE and Edge */
+                    scrollbar-width: none; /* Firefox */
+                }
+            `}</style>
             <TopBar />
             <div style={{ display: 'flex', flex: 1, paddingTop: '64px' }}>
                 <NavigationBar />
@@ -77,7 +98,7 @@ const Chat = () => {
                                     <AddCommentIcon />
                                 </button>
                             </div>
-                            <div style={styles.userList}>
+                            <div style={styles.userList} className="hide-scrollbar">
                                 {conversations.map((conv) => (
                                     <div
                                         key={conv.user._id}
@@ -128,7 +149,7 @@ const Chat = () => {
                                         </h2>
                                     </div>
 
-                                    <div style={styles.messagesArea}>
+                                    <div style={styles.messagesArea} className="hide-scrollbar">
                                         {currentMessages.map((msg, index) => {
                                             const isMe = msg.sender === currentUser?._id;
                                             return (

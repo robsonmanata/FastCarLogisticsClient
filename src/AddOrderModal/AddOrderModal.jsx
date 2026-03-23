@@ -6,8 +6,10 @@ import { getProducts } from '../actions/products';
 import { checkProductByBarcode } from '../api/index';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { AddOrderModalStyles } from './addordermodalstyle';
 
 const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
+    const styles = new AddOrderModalStyles();
     const dispatch = useDispatch();
     const { items: products } = useSelector((state) => state.products);
     const orderToEdit = useSelector((state) => {
@@ -149,126 +151,6 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
         }
     };
 
-    const styles = {
-        overlay: {
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 1000,
-        },
-        modal: {
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            padding: '1.5rem', // Reduced padding
-            width: '500px',
-            maxHeight: '90vh', // KEPT as requested
-            overflowY: 'auto', // KEPT as requested
-        },
-        header: {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginBottom: '1rem', // Reduced
-        },
-        title: {
-            fontSize: '1.25rem', // Slightly smaller
-            fontWeight: 'bold',
-            color: '#1f2937',
-        },
-        closeButton: {
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            color: '#6b7280',
-        },
-        formGroup: {
-            marginBottom: '0.75rem', // Reduced
-        },
-        label: {
-            display: 'block',
-            marginBottom: '0.25rem', // Reduced
-            fontWeight: '500',
-            color: '#374151',
-            fontSize: '0.875rem' // Smaller text
-        },
-        input: {
-            width: '100%',
-            padding: '0.4rem', // Reduced
-            borderRadius: '6px',
-            border: '1px solid #d1d5db',
-            color: '#1f2937',
-            backgroundColor: 'white',
-            fontSize: '0.875rem'
-        },
-        select: {
-            width: '100%',
-            padding: '0.4rem', // Reduced
-            borderRadius: '6px',
-            border: '1px solid #d1d5db',
-            color: '#1f2937',
-            backgroundColor: 'white',
-            fontSize: '0.875rem'
-        },
-        addItemGroup: {
-            display: 'flex',
-            gap: '0.5rem',
-            alignItems: 'flex-end',
-            marginBottom: '0.75rem', // Reduced
-        },
-        addButton: {
-            padding: '0.4rem 0.75rem', // Reduced
-            backgroundColor: '#1f2937',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer',
-            fontSize: '0.875rem'
-        },
-        itemsList: {
-            marginBottom: '0.75rem',
-            border: '1px solid #e5e7eb',
-            borderRadius: '6px',
-            padding: '0.5rem',
-            color: '#1f2937',
-            fontSize: '0.875rem'
-        },
-        submitButton: {
-            width: '100%',
-            padding: '0.6rem', // Reduced
-            backgroundColor: isLoading ? '#9ca3af' : '#1f2937',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            fontWeight: 'bold',
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            marginTop: '0.5rem',
-            fontSize: '0.875rem'
-        },
-        deleteButton: {
-            width: '100%',
-            padding: '0.6rem', // Reduced
-            backgroundColor: '#ef4444',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            fontWeight: 'bold',
-            cursor: 'pointer',
-            marginTop: '0.5rem',
-            fontSize: '0.875rem'
-        },
-        removeIcon: {
-            cursor: 'pointer',
-            color: '#ef4444',
-            marginLeft: '0.5rem',
-        }
-    };
-
     return (
         <div style={styles.overlay}>
             <div style={styles.modal}>
@@ -374,7 +256,7 @@ const AddOrderModal = ({ onClose, currentId, setCurrentId }) => {
                         </div>
                     )}
 
-                    <button type="submit" disabled={isLoading} style={styles.submitButton}>
+                    <button type="submit" disabled={isLoading} style={{ ...styles.submitButton, backgroundColor: isLoading ? '#9ca3af' : '#1f2937', cursor: isLoading ? 'not-allowed' : 'pointer' }}>
                         {isLoading ? 'Processing...' : (currentId ? 'Update Order' : 'Create Order')}
                     </button>
                     {currentId && (

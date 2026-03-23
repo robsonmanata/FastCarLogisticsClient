@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrders } from '../actions/orders';
 import { getProducts } from '../actions/products';
-import { ItemsOrderedStyles } from './ItemsOrderedStyles';
+import { ItemsOrderedStyles } from './ItemsOrderedstyle';
 import TopBar from '../topBar/topbar';
 import NavigationBar from '../navigationbar/navigationbar';
-import Pagination from '../components/Pagination/Pagination';
+import Pagination from '../components/Pagination/pagination';
 
 const ItemsOrdered = () => {
     const dispatch = useDispatch();
