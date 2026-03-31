@@ -7,7 +7,7 @@ import NavigationBar from '../navigationbar/navigationbar';
 import AddIcon from '@mui/icons-material/Add';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import EditIcon from '@mui/icons-material/Edit';
-import { getUsers, signup, updateUser, deleteUser } from '../actions/user';
+import { getUsers, createUser, updateUser, deleteUser } from '../actions/user';
 import imageCompression from 'browser-image-compression';
 import ConfirmationModal from '../components/ConfirmationModal/confirmationmodal';
 
@@ -125,50 +125,14 @@ const Users = () => {
                 alert("Passwords don't match");
                 return;
             }
-            // Signup expects specific fields
-            // (formData, navigate) -> dispatch
-            // We won't navigate, we'll just reload users or wait for dispatch
-            // Actually signup action navigates... we might want a 'createUser' action that doesn't navigate.
-            // But let's reuse signup logic or create a dedicated 'createUser' if needed.
-            // Looking at existing actions, `signup` calls `api.signUp`.
-            // Ideally we create a `createUser` action that doesn't log us in.
-            // Wait, `actions/user.jsx` has `createUser`.
-            await dispatch(signup(formData, () => { })); // Pass empty navigate or handle differently? 
-            // Correction: The `signup` action in `user.jsx` logs the user in (AUTH/navigate).
-            // We need to use `createUser` action if it exists for admin creation.
-            // Previous file view showed `export const createUser = (user) => ...`
-            // Let's use that.
+
             const newUserData = {
                 ...formData,
                 name: formData.firstName,
                 surname: formData.lastName
-                // API expects 'role' and 'profilePicture' maybe?
             };
-            // Wait, `createUser` action calls `api.createUser`. Does backend support it? Yes `router.post('/', createUser)`.
-            // But backend `createUser` was simple `new User(req.body)`. It might not hash password!
-            // `signup` controller hashes password. `createUser` controller (common CRUD) might not.
-            // Let's check backend `createUser` logic again.
-            // Ah, `signup` handles hashing. `createUser` was: `const newUser = new User(user); await newUser.save();`
-            // This implies `createUser` creates raw user. It won't hash password!
-            // Admin creating user should probably trigger `signup` logic but without logging in essentially.
-            // Or we fix `createUser` controller? 
-            // Best to use `signup` endpoint for creation logic but we are admin.
-            // Let's rely on `signup` but mod action to not navigate if callback provided?
-            // Or call `api.signUp` directly?
-            // Let's stick with `signup` action but pass a dummy navigate to prevent redirect if possible,
-            // OR better: Fix `createUser` controller to hash password too?
-            // Actually, `updateUser` now hashes. We could update `createUser` to hash too.
-            // But let's assume `signup` is the "Create User" flow. 
-            // The `signup` action does `dispatch({ type: 'AUTH', data })` which logs CURRENT admin out if we are not careful (replacing token in local storage).
-            // WE CANNOT USE `signup` action here as it replaces our session.
-            // We MUST use `createUser` action and ensure backend hashes password.
 
-            // I will use `createUser` here. I need to make sure backend `createUser` hashes password.
-            // I will update backend `createUser` controller in next step if checking reveals it lacks hashing.
-            // For now, I'll dispatch `createUser`.
-
-            await dispatch(signup({ ...formData }, () => { })); // Wait, signup logs in.
-            // I will refactor to use `createUser` separate action that does NOT log in.
+            await dispatch(createUser(newUserData));
         } else {
             // Edit
             if (formData.password && formData.password !== formData.confirmPassword) {

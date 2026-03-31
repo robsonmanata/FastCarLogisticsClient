@@ -164,7 +164,6 @@ const Login = () => {
                         {isSignUp && (
                             <>
                                 <div style={styles.inputGroup}>
-
                                     <label style={styles.fileInputLabel}>
                                         {formData.profilePicture ? 'Profile Picture Added' : 'Add Profile Picture'}
                                         <input
